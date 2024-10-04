@@ -1,0 +1,3 @@
+.wishContainer{
+    @apply  flex gap-[20px] flex-wrap justify-center  w-full p-6 relative top-32 md:top-32 ;
+}
