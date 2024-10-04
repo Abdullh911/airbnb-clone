@@ -8,7 +8,7 @@ import './Card.css';
 import {Star,List,UserCircle} from '@phosphor-icons/react'
 import homes from '../mockData';
 import { useRecoilState } from 'recoil';
-import { currUser, isLoading, showSignup } from '../../StateMangement/State';
+import { currUser, isEnglish, isLoading, showSignup } from '../../StateMangement/State';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loading from '../../assets/Loading.png'
@@ -17,6 +17,7 @@ const Card = ({ home }) => {
     let [showS,setShowS]=useRecoilState(showSignup);
     let [iconStyle,setIconStyle]=useState("");
     let [showText,setShowText]=useRecoilState(isLoading);
+    let [english,setEnglish]=useRecoilState(isEnglish);
     let navigate=useNavigate();
     function addFav() {
         if (curr) {
@@ -80,14 +81,14 @@ const Card = ({ home }) => {
             <div 
             onClick={()=>{
                 navigate(`/stay/${home.id}`);
-            }} className='w-full font-[Poppins]'>
+            }} className='w-full font-[Poppins] ' dir={`${english?'ltr':'rtl'}`} >
                 <div className='flex w-full justify-between'>
                     <p className={`${!showText?'font-[450] text-[14px] w-full flex justify-between':'loadingCardContent'}`} >{home.city+", "+home.country}</p>
                     <p className={`${!showText?'flex items-center text-[14px] gap-1':'loadingCardContent'}`}><span className={`${!showText?'':'opacity-0'}`}><Star size={12} color="#0f0f0f" weight="fill" /></span> {home.rating} </p>
                 </div>
-                <p className={`${!showText?'text-gray-500 text-[15px]':'loadingCardContent'}`}>{home.kilometersAway+" Kilometers away"}</p>
-                <p className={`${!showText?'text-gray-500 text-[15px]':'loadingCardContent'}`} >Oct 18-23</p>
-                <p className={`${!showText?' text-[15px]':'loadingCardContent'}`}><span className='font-semibold'>{home.pricePerNight}$</span> night</p>
+                <p className={`${!showText?'text-gray-500 text-[15px]':'loadingCardContent'}`}>{home.kilometersAway+`${english?" Kilometers away":" كم"}`}</p>
+                <p className={`${!showText?'text-gray-500 text-[15px]':'loadingCardContent'}`} >{`${english?"Oct 18-23":"اكتوبر 18-23"}`}</p>
+                <p className={`${!showText?' text-[15px]':'loadingCardContent'}`}><span className='font-semibold'>{home.pricePerNight}$</span> {`${english?" night":" الليلة"}`}</p>
             </div>
         </div>
     );

@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { cats, initFilters, isLoading, isStay, isTrips, isWishlist, listings, selectedCat } from "../../StateMangement/State";
+import { cats, initFilters, isEnglish, isLoading, isStay, isTrips, isWishlist, listings, selectedCat } from "../../StateMangement/State";
 import CardContainer from "../../Components/CardContainer/CardContainer";
 import homes from "../../Components/mockData";
+import homesAr from "../../Components/mockDataAr";
 
 const Category = () => {
     let {category}=useParams();
@@ -14,7 +15,8 @@ const Category = () => {
     let [isRoomPage,setIsRoomPage]=useRecoilState(isStay);
     let [isWish,setIsWish]=useRecoilState(isWishlist);
     let [isTp,setIsTp]=useRecoilState(isTrips);
-    let [filters,setFilters]=useRecoilState(initFilters)
+    let [filters,setFilters]=useRecoilState(initFilters);
+    let [english,setEnglish]=useRecoilState(isEnglish);
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowText(false);
@@ -51,12 +53,15 @@ const Category = () => {
         }
         console.log(filters);
         
-        let temp=filterListings(homes);
+        let temp=filterListings(english?homes:homesAr);
         setFiltered(temp);
     },[filters,category]);
 
 
     useEffect(()=>{
+        console.log(categories);
+        console.log(english);
+        
         let x=categories.findIndex(ct=>
             ct.toLowerCase()==category.toLowerCase()
         )

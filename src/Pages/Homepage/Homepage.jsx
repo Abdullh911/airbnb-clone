@@ -4,8 +4,9 @@ import Navbar from "../../Components/Navbar/Navbar";
 import TypeCarousel from "../../Components/TypeCarousel/TypeCarousel";
 import './Homepage.css'
 import { useRecoilState } from "recoil";
-import { cats, initFilters, isLoading, isStay, isTrips, isWishlist, listings, selectedCat, showContModal, showDateModal } from "../../StateMangement/State";
+import { cats, initFilters, isEnglish, isLoading, isStay, isTrips, isWishlist, listings, selectedCat, showContModal, showDateModal } from "../../StateMangement/State";
 import homes from "../../Components/mockData";
+import homesAr from "../../Components/mockDataAr";
 const Homepage = () => {
     let [isRoomPage,setIsRoomPage]=useRecoilState(isStay);
     let [isWish,setIsWish]=useRecoilState(isWishlist);
@@ -16,13 +17,15 @@ const Homepage = () => {
     let [filters,setFilters]=useRecoilState(initFilters);
     let [showCmodal,setShowCmodal]=useRecoilState(showContModal);
     let [showDmodal,setShowDmodal]=useRecoilState(showDateModal);
+    let [english,setEnglish]=useRecoilState(isEnglish);
     useEffect(()=>{
+        console.log(english);
         let temp2=Array(15).fill(false);
         temp2[0]=true;
         setCategories(temp2);
-        let temp=homes;
+        let temp=english?homes:homesAr;
         temp=temp.filter(listing=>
-            listing.category==="icons"
+            listing.category==="icons" || listing.category==="أيقونات"
         );
         setFiltered(temp);
     },[]);
@@ -38,7 +41,7 @@ const Homepage = () => {
             
             if(filters.type === 'Any'){
                 return listingss.filter(listing => 
-                    listing.category.toLowerCase()==="icons"&&
+                    (listing.category.toLowerCase()==="icons"||listing.category==="أيقونات")&&
                     listing.beds >= filters.minBeds &&
                     listing.bedrooms >= filters.minBedrooms &&
                     listing.pricePerNight >= filters.minPrice &&
@@ -46,7 +49,7 @@ const Homepage = () => {
                   )
             }
             return listingss.filter(listing => 
-                listing.category.toLowerCase()==="icons"&&
+                (listing.category.toLowerCase()==="icons"||listing.category==="أيقونات")&&
               listing.type === filters.type &&
               listing.beds >= filters.minBeds &&
               listing.bedrooms >= filters.minBedrooms &&
@@ -54,7 +57,7 @@ const Homepage = () => {
               listing.pricePerNight <= filters.maxPrice
             )
         }
-        let temp=filterListings(homes);
+        let temp=filterListings(english?homes:homesAr);
         setFiltered(temp);
     },[filters]);
     // useEffect(() => {

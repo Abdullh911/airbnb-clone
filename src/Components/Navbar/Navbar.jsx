@@ -2,7 +2,7 @@ import LargeSearch from '../LargeSearch/LargeSearch';
 import SmallSearch from '../SmallSearch/SmallSearch';
 import './Navbar.css';
 import { useRecoilState } from 'recoil';
-import { currUser, isLarge, isLoading, isReservePage, isStay, isTrips, isWishlist, showModal, showUserMenu } from '../../StateMangement/State';
+import { currUser, isEnglish, isLarge, isLoading, isReservePage, isStay, isTrips, isWishlist, showModal, showUserMenu } from '../../StateMangement/State';
 import { Globe, List, UserCircle } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import UserMenu from '../UserMenu/UserMenu';
@@ -23,7 +23,7 @@ const Navbar = () => {
     let [isTp,setIsTp]=useRecoilState(isTrips);
     let [showText,setShowText]=useRecoilState(isLoading);
     let [reserve,setReserve]=useRecoilState(isReservePage);
-
+    let [english,setEnglish]=useRecoilState(isEnglish);
     let navigate=useNavigate();
     useEffect(() => {
         
@@ -84,7 +84,7 @@ const Navbar = () => {
                 {(!isWish&&!isTp&&!isRoomPage&&visible) && <LargeSearch />}
 
             </div>
-            {!isRoomPage&&<div className={`${reserve?'md:hidden':'md:flex'} w-[100%] md:px-28 lg:px-0   gap-1 mb-[8px] justify-center items-center hidden -z-10`}>
+            {!isRoomPage&&<div className={ `${english?'':'flex-row-reverse'} ${reserve?'md:hidden':'md:flex'} w-[100%] md:px-28 lg:px-0   gap-1 mb-[8px] justify-center items-center hidden -z-10`}>
                     <div className='w-[65%] z-0'>
                         <TypeCarousel/>
                     </div>
@@ -92,7 +92,7 @@ const Navbar = () => {
                         <button onClick={()=>{
                             setShowM(true);
                         }} className='fltrBtn'><i class="fa-solid fa-sliders"></i>Filters</button>
-                        <div className='fltrBtn'>
+                        <div className={`fltrBtn ${english?'':'flex-row-reverse'}`}>
                             <p className='text-[12px] text-nowrap'>Display total before taxes</p>
                             <Switch/>
                         </div>

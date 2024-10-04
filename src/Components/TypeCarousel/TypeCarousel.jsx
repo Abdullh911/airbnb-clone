@@ -10,9 +10,12 @@ import 'swiper/css/autoplay';
 
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { useRecoilState } from "recoil";
-import { currCat, selectedCat } from "../../StateMangement/State";
+import { currCat, isEnglish, selectedCat } from "../../StateMangement/State";
+import homes from "../mockData";
+import homesAr from "../mockDataAr";
 const TypeCarousel = () => {
     const types=['Icons','Farms','Amazing pools','OMG!','Arctic','Camping','Rooms','Amazing Views','Beach Front',"Trending",'Islands','Lakefront', "Surfing",'Cabins','Mansions'];
+    const typesAr = ['أيقونات','مزارع', 'مسابح مذهلة','يا إلهي!','قطبي','تخييم','غرف','مناظر مذهلة', 'واجهة شاطئية','رائجة','جزر','على ضفاف البحيرة','ركوب الأمواج','أكواخ','قصور'];
     const icons=[
         <Ticket  size={25}  weight="fill" />,
         <Farm  size={25}  weight="fill" />,
@@ -32,13 +35,16 @@ const TypeCarousel = () => {
     ]
     let [selected, setSelected]=useRecoilState(selectedCat);
     let [catCurr, setCatCurr]=useRecoilState(currCat);
-    
-    function changeSelected(index){
-        let temp=Array(15).fill(false);
-        temp[index]=true;
-        setSelected(temp);
-        setCatCurr(types[index]);
+    let [english, setEnglish]=useRecoilState(isEnglish);
+    function changeSelected(index) {
+        const newSelected = Array(15).fill(false);
+        newSelected[index] = true;
+        console.log(newSelected);
+        
+        setSelected(newSelected);
+        setCatCurr(english ? types[index] : typesAr[index]);
     }
+    
     useEffect(()=>{
         changeSelected(0);
     },[])
@@ -58,7 +64,7 @@ const TypeCarousel = () => {
                         1200: { slidesPerView: 10, spaceBetween: 6 },
                     }}
                 >
-                    {types.map((typeText, index) => (
+                    {(english?types:typesAr).map((typeText, index) => (
                         <SwiperSlide key={index}>
                             <TypeCard selected={selected} change={changeSelected} text={typeText} icon={icons[index]} ind={index} />
                         </SwiperSlide>

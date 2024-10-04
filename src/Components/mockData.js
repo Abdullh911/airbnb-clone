@@ -660,7 +660,7 @@ const homes=[
     "destination": "europe",
     "category": "icons",
     "id": 31,
-    "title": "منزل",
+    "title": "good house in europe",
     "city": "San Jose",
     "country": "United States",
     "pricePerNight": 204,

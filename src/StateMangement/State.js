@@ -1,13 +1,18 @@
-import { atom } from 'recoil';
+import { atom ,selector} from 'recoil';
 
 import homes from '../Components/mockData';
+import homesAr from '../Components/mockDataAr';
+export const isEnglish = atom({
+    key: 'isEnglish', 
+    default: JSON.parse(localStorage.getItem('isEnglish')) || false,
+});
 export const isLarge = atom({
   key: 'isLarge', 
   default: true,
 });
 export const listings = atom({
     key: 'listings', 
-    default: homes,
+    default: isEnglish?homes:homesAr,
 });
 export const showModal = atom({
     key: 'showModal', 
@@ -63,9 +68,14 @@ export const selectedCat = atom({
     key: 'selectedCat', 
     default: [true,Array(14).fill(false)],
 });
-export const cats=atom({
-    key: 'cats', 
-    default:['Icons','Farms','Amazing pools','OMG!','Arctic','Camping','Rooms','Amazing Views','Beach Front',"Trending",'Islands','Lakefront', "Surfing",'Cabins','Mansions']
+export const cats = selector({
+    key: 'cats',
+    get: ({ get }) => {
+        const english = get(isEnglish);
+        return english 
+            ? ['Icons', 'Farms', 'Amazing pools', 'OMG!', 'Arctic', 'Camping', 'Rooms', 'Amazing Views', 'Beach Front', "Trending", 'Islands', 'Lakefront', "Surfing", 'Cabins', 'Mansions'] 
+            : ['أيقونات', 'مزارع', 'مسابح مذهلة', 'يا إلهي!', 'قطبي', 'تخييم', 'غرف', 'مناظر مذهلة', 'واجهة شاطئية', 'رائجة', 'جزر', 'على ضفاف البحيرة', 'ركوب الأمواج', 'أكواخ', 'قصور'];
+    }
 });
 export const showContModal = atom({
     key: 'showContModal', 
