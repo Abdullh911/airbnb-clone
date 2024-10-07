@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { initFilters } from "../../StateMangement/State";
 const BedCounter = ({title ,set}) => {
     const [count,setCount]=useState(0);
-    let [storeFltrs,setSetStoreFltrs]=useRecoilState(initFilters)
+    let [storeFltrs,setSetStoreFltrs]=useRecoilState(initFilters);
     function increaseCount(){
         console.log(count);
         let temp=count+1;

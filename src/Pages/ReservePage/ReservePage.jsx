@@ -5,15 +5,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import './ReservePage.css'
 import homes from "../../Components/mockData";
 import Loader from "../../Components/Loader";
+import { langCode, mobileSearchModal,isEnglish } from '../../StateMangement/State';
+import langs from '../../langs';
 const ReservePage = () => {
     let {id,price,nights,inDate,outDate}=useParams();
     let [reserve,setReserve]=useRecoilState(isReservePage);
     let [showSmodal,setShowSmodal]=useRecoilState(showSignup);
     let [curr,setCurr]=useRecoilState(currUser);
     let [loading,setLoading]=useState(false);
+    let [lang,setLang]=useRecoilState(langCode);
+    let [english,setEnglish]=useRecoilState(isEnglish);
     let navigate=useNavigate();
     useEffect(()=>{
-        console.log("hi");
         
         setReserve(true);
         return ()=>{
@@ -50,35 +53,35 @@ const ReservePage = () => {
     }
     return ( 
         
-        <div className="reservationPage">
-            <h1 className="text-3xl font-semibold mb-8 ">Confirm and Pay</h1>
+        <div dir={`${english?'ltr':'rtl'}`} className="reservationPage">
+            <h1 className="text-3xl font-semibold mb-8 ">{langs[lang].confirmAndPay}</h1>
             <div className="reservationPageCont">
             
                 <div className="w-full md:w-1/2">
                     
-                    <h1 className="text-xl font-semibold mb-5 ">Your trip</h1>
+                    <h1 className="text-xl font-semibold mb-5 ">{langs[lang].yourTrip}</h1>
                     <div className="mb-5 text-lg">
-                        <p>Dates</p>
+                        <p>{langs[lang].dates}</p>
                         <p>{inDate} to {outDate}</p>
                     </div>
                     <div className="border-b-2 pb-4 text-lg">
-                        <p>Guests</p>
-                        <p>1 guest</p>
+                        <p>{langs[lang].guests}</p>
+                        <p>1 {langs[lang].guests}</p>
                     </div>
                     <div className="border-b-2 pb-4 mt-4">
-                        <h1 className="text-xl font-semibold mb-8">Pay with</h1>
+                        <h1 className="text-xl font-semibold mb-8">{langs[lang].payWith}</h1>
                         <p className="text-lg"><i class="fa-brands fa-cc-mastercard mr-5"></i> 5408************</p>
                     </div>
                     <div className="border-b-2 pb-4 mt-4">
-                        <h1 className="text-xl font-semibold mb-8">Non-refundable</h1>
-                        <p className="text-lg">This reservation is non-refundable. <span className="underline">Learn more</span></p>
+                        <h1 className="text-xl font-semibold mb-8">{langs[lang].nonRefundable}</h1>
+                        <p className="text-lg">{langs[lang].nonRefundableNote} <span className="underline">Learn more</span></p>
                     </div>
                     <div className="border-b-2 pb-4 mt-4">
-                        <h1 className="text-xl font-semibold mb-8">Ground rules</h1>
-                        <p className="text-lg">We ask every guest to remember a few simple things about what makes a great guest.</p>
+                        <h1 className="text-xl font-semibold mb-8">{langs[lang].groundRules}</h1>
+                        <p className="text-lg">{langs[lang].groundRulesNote}</p>
                     </div>
                     <div>
-                        <button onClick={reserveHome} className="mb-20 my-5 rounded-xl w-48 h-12 bg-purple-600 text-white text-nowrap">Confirm and pay</button>
+                        <button onClick={reserveHome} className="mb-20 my-5 rounded-xl w-48 h-12 bg-purple-600 text-white text-nowrap">{langs[lang].confirmAndPay}</button>
                     </div>
                 </div>
                 <div className="w-full md:w-[40%] border-2 h-max p-8 rounded-2xl">
@@ -92,18 +95,18 @@ const ReservePage = () => {
                             </div>
                         </div>
                         <div>
-                            <h1 className="text-xl font-semibold mb-5 ">Price Details</h1>
+                            <h1 className="text-xl font-semibold mb-5 ">{langs[lang].priceDetails}</h1>
                             <div className="flex justify-between mb-5">
-                                <p>{homes[id-1].pricePerNight}$ X {nights}</p>
+                                <p>{homes[id-1].pricePerNight}$  {nights}X </p>
                                 <p>{nights*homes[id-1].pricePerNight}$</p>
                             </div>
                             <div className="flex justify-between border-b-2 pb-5 mb-5">
-                                <p>Long stay discount</p>
+                                <p>{langs[lang].longStayDiscount}</p>
                                 <p>-30$</p>
                             </div>
                         </div>
                         <div className="flex justify-between pb-5 mb-5">
-                            <p>Total</p>
+                            <p>{langs[lang].total}</p>
                             <p>{nights*homes[id-1].pricePerNight-30}$</p>
                         </div>
                     </div>

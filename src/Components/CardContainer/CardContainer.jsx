@@ -8,6 +8,7 @@ import TypeCarousel from '../TypeCarousel/TypeCarousel';
 import Switch from '../Switch/Switch';
 import FilterModal from '../FilterModal/FilterModal';
 import { listings } from '../../StateMangement/State';
+import Footer from '../Footer';
 
 const CardContainer = () => {
     const [visible, setVisible] = useRecoilState(isLarge);
@@ -40,7 +41,7 @@ const CardContainer = () => {
     }, [visible]);
 
     return (
-        <div className='flex flex-col items-center'>
+        <div className='flex flex-col items-center '>
             
             
             <div className="CardContainer">
@@ -48,6 +49,7 @@ const CardContainer = () => {
                     <Card key={home.id} home={home} />
                 ))}
             </div>
+            <Footer/>
         </div>
     );
 };

@@ -17,10 +17,12 @@ const FilterModal = () => {
     const [chosens,setChosens]=useState([true,false,false]);
     let [storeFltrs,setSetStoreFltrs]=useRecoilState(initFilters)
     let [showM,setShowM]=useRecoilState(showModal);
-    const [filters,setFilters]=useState(tempFilters);
+    let [filters,setFilters]=useState(storeFltrs);
     let [catCurr, setCatCurr]=useRecoilState(currCat);
     
     useEffect(()=>{
+        //console.log(storeFltrs);
+        setFilters(storeFltrs);
         if(storeFltrs.type=="Any"){
             select(0);
 
@@ -37,73 +39,42 @@ const FilterModal = () => {
         //startFilter(homes);
         setShowM(false);
     }
-    function select(index){
-        let temp =Array(3).fill(false);
-        temp[index]=true;
+    function select(index) {
+        let temp = Array(3).fill(false);
+        temp[index] = true;
         setChosens(temp);
-        if(index==0){
-            let temp=filters
-            temp.type='Any';
-            setFilters(temp);
+        let updatedFilters = { ...filters };
+        if (index === 0) {
+            updatedFilters.type = 'Any';
+        } else if (index === 1) {
+            updatedFilters.type = 'Room';
+        } else {
+            updatedFilters.type = 'Home';
         }
-        else if(index==1){
-            let temp=filters
-            temp.type='Room';
-            setFilters(temp);
-        }
-        else{
-            let temp=filters
-            temp.type='Home';
-            setFilters(temp);
-        }
-        console.log();
-        
+        setFilters(updatedFilters); 
     }
-    function setPriceRange(range){
-        let temp=filters;
-        temp.minPrice=range[0];
-        temp.maxPrice=range[1];
-        setFilters(temp);
+    
+    function setPriceRange(range) {
+        let updatedFilters = { ...filters, minPrice: range[0], maxPrice: range[1] };
+        setFilters(updatedFilters);
     }
-    function setBeds(min){
-        let temp=filters;
-        temp.minBeds=min;
-        setFilters(temp);
-        
+    
+    function setBeds(min) {
+        let updatedFilters = { ...filters, minBeds: min };
+        setFilters(updatedFilters);
     }
-    function setBedrooms(min){
-        let temp=filters;
-        temp.minBedrooms=min;
-        setFilters(temp);
+    
+    function setBedrooms(min) {
+        let updatedFilters = { ...filters, minBedrooms: min };
+        setFilters(updatedFilters);
     }
     function startFilter(){
         //let temp=filterListings(homes);
         //setList(temp);
+        console.log(filters);
+        
         setSetStoreFltrs(filters);
         setShowM(false);
-    }
-    
-    
-    const filterListings = (listingss) => {
-        console.log(catCurr,listingss);
-        
-        if(filters.type === 'Any'){
-            return listingss.filter(listing => 
-                listing.category.toLowerCase()===catCurr.toLowerCase()&&
-                listing.beds >= filters.minBeds &&
-                listing.bedrooms >= filters.minBedrooms &&
-                listing.pricePerNight >= filters.minPrice &&
-                listing.pricePerNight <= filters.maxPrice
-              )
-        }
-        return listingss.filter(listing => 
-            listing.category.toLowerCase()===catCurr.toLowerCase()&&
-          listing.type === filters.type &&
-          listing.beds >= filters.minBeds &&
-          listing.bedrooms >= filters.minBedrooms &&
-          listing.pricePerNight >= filters.minPrice &&
-          listing.pricePerNight <= filters.maxPrice
-        )
     }
     const amenities=['Wifi','Kitchen','Washer','Dryer','Air conditioning','Heating'];
     const amenitiesIcons=[<i class="fa-solid fa-wifi"></i>,<i class="fa-solid fa-kitchen-set"></i>,<i class="fa-solid fa-hard-drive"></i>,<i class="fa-solid fa-wind"></i>,<i class="fa-regular fa-snowflake"></i>,<i class="fa-solid fa-temperature-three-quarters"></i>]

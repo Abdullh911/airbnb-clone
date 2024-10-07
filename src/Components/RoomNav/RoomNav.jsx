@@ -16,7 +16,7 @@ const RoomNav = ({home}) => {
                 temp.wishlist.splice(index, 1);
             }
             else{
-                temp.wishlist.push(home);
+                temp.wishlist.push(home.id);
             }
             setCurr(temp);            
         } else {
@@ -26,7 +26,7 @@ const RoomNav = ({home}) => {
     function checkIsFav(){
         let isFavorite;
         if(curr){
-            isFavorite = curr.wishlist.some(card => card.id === home.id);
+            isFavorite = curr.wishlist.includes( home.id);
         }
         return isFavorite;
     }

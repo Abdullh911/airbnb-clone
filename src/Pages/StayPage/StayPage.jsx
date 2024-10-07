@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { isLoading, isStay, showContModal, showDateModal } from "../../StateMangement/State";
+import { isEnglish, isLoading, isStay, langCode, showContModal, showDateModal } from "../../StateMangement/State";
 import homes from "../../Components/mockData";
 import './StayPage.css';
 import img from '../../assets/guestFavortite.png'
@@ -15,13 +15,20 @@ import Reserve from "../../Components/Reserve/Reserve";
 import SmallPayment from "../../Components/SmallPayment/SmallPayment";
 import RoomNav from "../../Components/RoomNav/RoomNav";
 import ImgCarousel from "../../Components/imgCarousel/ImgCarousel";
+import langs from '../../langs';
+import homesAr from "../../Components/mockDataAr";
+
 const StayPage = () => {
     let {id}=useParams();
+    let [english,setEnglish]=useRecoilState(isEnglish);
+
     let [isRoomPage,setIsRoomPage]=useRecoilState(isStay);
-    let [data,setData]=useState(homes[id-1]);
+    let [data,setData]=useState(english?homes[id-1]:homesAr[id-1]);
     let [showCmodal,setShowCmodal]=useRecoilState(showContModal);
     let [showDmodal,setShowDmodal]=useRecoilState(showDateModal);
     let [isLoad,setIsload]=useRecoilState(isLoading);
+    let [lang,setLang]=useRecoilState(langCode);
+
     useEffect(()=>{
         setIsRoomPage(true);
         setIsload(false);
@@ -50,8 +57,8 @@ const StayPage = () => {
             <div className="stayAll">
             <SmallPayment home={homes[id-1]} price={data.pricePerNight}/>
             
-            <div className="stayBody">
-                <h1 className="hidden md:block text-[26px] mb-7">{data.title}</h1>
+            <div  className="stayBody">
+                <h1 dir={`${english?'ltr':'rtl'}`} className="hidden md:block text-[26px] mb-7">{data.title}</h1>
                 
                 <div className="imgs">
                     <div className="soloImg">
@@ -65,21 +72,21 @@ const StayPage = () => {
                     </div>
                     <div className="showAllPics">
                         <i class="fa-solid fa-table-cells"></i>
-                        <p>Show all photos</p>
+                        <p>{langs[lang].showAll}</p>
                     </div>
                 </div>
                 <div className="stayDetails">
-                    <div className="flex w-full justify-between pr-[5%]">
-                        <div className="description">
-                            <h2 className="text-[23px]">Entire {data.type} in {data.city+", "+data.country}</h2>
-                            <p className="mb-7">6 guests · {data.bedrooms} bedrooms · {data.beds} beds · 1 bath</p>
+                    <div className={`flex w-full justify-between pr-[5%] ${english?'':'flex-row-reverse'}`}>
+                        <div dir={`${english?'ltr':'rtl'}`} className="description">
+                            <h2 className="text-[23px]">{langs[lang].entire}  {langs[lang].in} {data.city+", "+data.country}</h2>
+                            <p  className="mb-7">6 {langs[lang].guests} · {data.bedrooms} {langs[lang].bedrooms} · {data.beds} {langs[lang].beds} · 1 {langs[lang].baths}</p>
                             <div className="guestFavoriteHome">
                                 <img className="rome" src={img} alt="" />
-                                <p className="w-[270px] hidden xl:block">One of the most loved homes on Airbnb,according to guests</p>
+                                <p className="w-[270px] hidden xl:block">{langs[lang].oneOfMost}</p>
                                 <img className="w-20 h-14" src={stars} alt="" />
                                 <div className="flex flex-col justify-center items-center">
                                     <p className="font-semibold text-[20px]">6</p>
-                                    <p className="underline">Reviews</p>
+                                    <p className="underline">{langs[lang].reviews}</p>
                                 </div>
                             </div>
                             <div className="host">
@@ -87,15 +94,15 @@ const StayPage = () => {
                                     P
                                 </div>
                                 <div>
-                                <p className=" font-semibold">Hosted by Piavi</p>
-                                <p className="text-gray-500 text-[13px]">3 months hosting</p>
+                                <p className=" font-semibold">{langs[lang].hosted}</p>
+                                <p className="text-gray-500 text-[13px]">{langs[lang].hostSpan}</p>
                                 </div>
                             </div>
                             <div className="border-b-[1px] pb-5 mb-7">
-                                <Services title={"Room in a home"} slogan={"Your own room in a home, plus access to shared spaces."}/>
-                                <Services title={"Shared common spaces"} slogan={"You’ll share parts of the home with other guests."}/>
-                                <Services title={"Private attached bathroom"} slogan={"This place has a bathroom that’s connected to your room."}/>
-                                <Services title={"Great check-in experience"} slogan={"100% of recent guests gave the check-in process a 5-star rating."}/>
+                                <Services bePut={langs[lang].new_roomInHome} title={"Room in a home"} slogan={langs[lang].roomInHome}/>
+                                <Services bePut={langs[lang].new_sharedSpaces} title={"Shared common spaces"} slogan={langs[lang].sharedSpaces}/>
+                                <Services bePut={langs[lang].new_prvSpace} title={"Private attached bathroom"} slogan={langs[lang].prvSpace}/>
+                                <Services bePut={langs[lang].new_grtExp} title={"Great check-in experience"} slogan={langs[lang].grtExp}/>
                             </div>
                             <Offers/>
                         </div>
@@ -113,49 +120,49 @@ const StayPage = () => {
                                     <img src={rightleaf} alt="" />
                                 </div>
                                 <div className="w-full text-center flex flex-col items-center">
-                                    <p className="font-bold text-[22px]">Guest favorite</p>
+                                    <p className="font-bold text-[22px]">{langs[lang].guestFav}</p>
                                     <p className="w-80 text-gray-500">
-                                        One of the most loved homes on Airbnb based on ratings, reviews, and reliability
+                                        {langs[lang].oneOfMost}                                    
                                     </p>  
                                 </div>
                                 <div className="breakVote">
                                     <div className="votePoint">
-                                        <p>Overall rating</p>
+                                        <p>{langs[lang].ovrAll}</p>
                                     </div>
                                     <div className="votePoint">
                                         <div>
-                                            <p>Cleanliness</p>
+                                            <p>{langs[lang].clean}</p>
                                             <p>4.8</p>
                                         </div>
                                         <i class="fa-solid fa-spray-can-sparkles"></i>
                                     </div>
                                     <div className="votePoint">
                                         <div>
-                                            <p>Accuracy</p>
+                                            <p>{langs[lang].accuracy}</p>
                                             <p>4.8</p>
                                         </div>
                                         <i class="fa-regular fa-circle-check"></i>                                    </div>
                                     <div className="votePoint">
                                         <div>
-                                            <p>Check-in</p>
+                                            <p>{langs[lang].check_in}</p>
                                             <p>5.0</p>
                                         </div>
                                         <i class="fa-solid fa-key"></i>                                    </div>
                                     <div className="votePoint">
                                         <div>
-                                            <p>Communication</p>
+                                            <p>{langs[lang].comm}</p>
                                             <p>4.8</p>
                                         </div>
                                         <i class="fa-regular fa-message"></i>                                    </div>
                                     <div className="votePoint">
                                         <div>
-                                            <p>Location</p>
+                                            <p>{langs[lang].loc}</p>
                                             <p>5.0</p>
                                         </div>
                                         <i class="fa-solid fa-map"></i>                                    </div>
                                     <div className="votePoint">
                                         <div>
-                                            <p>Value</p>
+                                            <p>{langs[lang].val}</p>
                                             <p>5.0</p>
                                         </div>
                                         <i class="fa-solid fa-tag"></i>                                    </div>

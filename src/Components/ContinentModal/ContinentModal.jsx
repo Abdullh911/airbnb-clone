@@ -6,14 +6,15 @@ import italy from '../../assets/italy.jpg';
 import usa from '../../assets/usa.jpg';
 import './ContinentModal.css'
 import { useRecoilState } from 'recoil';
-import { isStay, showContModal } from '../../StateMangement/State';
+import { isEnglish, isStay, langCode, showContModal } from '../../StateMangement/State';
 const ContinentModal = ({setDestination}) => {
     const contImgs=[flexible,europe,italy,usa,greece,seAsia];
     const txts=["I'm flexible","Europe","Italy","United States","Greece","Southeast Asia"]
     let [showCmodal,setShowCmodal]=useRecoilState(showContModal);
-
+    let [english,setEnglish]=useRecoilState(isEnglish);
+    let [lang,setLang]=useRecoilState(langCode);
     return ( 
-        <div className={`contModal ${showCmodal?'':'hidden'}`}>
+        <div className={`contModal ${showCmodal?'':'hidden'}  ${english?'left-0':'right-0'} `}>
             <p className='mb-5 font-semibold'>Search by region</p>
             <div className='contContainer'>
                 {contImgs.map((cont,index)=>(

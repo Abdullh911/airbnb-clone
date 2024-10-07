@@ -4,12 +4,20 @@ import homes from '../Components/mockData';
 import homesAr from '../Components/mockDataAr';
 export const isEnglish = atom({
     key: 'isEnglish', 
-    default: JSON.parse(localStorage.getItem('isEnglish')) || false,
+    default: JSON.parse(localStorage.getItem('isEnglish')) && true,
+});
+export const langCode = atom({
+    key: 'langCode', 
+    default: localStorage.getItem('langCode') || 'en',
 });
 export const isLarge = atom({
   key: 'isLarge', 
   default: true,
 });
+export const showLModal = atom({
+    key: 'showLModal', 
+    default: false,
+  });
 export const listings = atom({
     key: 'listings', 
     default: isEnglish?homes:homesAr,

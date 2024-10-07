@@ -1,7 +1,8 @@
 import { useRecoilState } from 'recoil';
 import './UserMenu.css';
-import { currUser, isStay, isTrips, isWishlist, showSignup, showUserMenu } from '../../StateMangement/State';
+import { currUser, isEnglish, isStay, isTrips, isWishlist, langCode, showSignup, showUserMenu } from '../../StateMangement/State';
 import { useNavigate } from 'react-router-dom';
+import langs from '../../langs';
 
 const UserMenu = () => {
     let [showS, setShowS] = useRecoilState(showSignup);
@@ -11,45 +12,43 @@ const UserMenu = () => {
     let [isWish,setIsWish]=useRecoilState(isWishlist);
     let [isTp,setIsTp]=useRecoilState(isTrips);
     let navigate = useNavigate();
+    let [english, setEnglish]=useRecoilState(isEnglish);
+    let [lang,setLang]=useRecoilState(langCode);
 
     const handleTripsClick = () => {
-        // Update state first
         setIsTp(true);
-        // Navigate to trips after ensuring the state update
         navigate('/trips');
-        // Close the user menu
         setShowU(false);
     };
 
     const handleWishlistClick = () => {
-        // Reset the state for non-room pages
         setIsWish(true);
         navigate('/wishlist');
         setShowU(false);
     };
 
     return (
-        <div style={{ boxShadow: '0 -4px 10px rgba(0, 0, 0, 0.1)' }} className="userMenu">
+        <div dir={`${english?'ltr':'rtl'}`} style={{ boxShadow: '0 -4px 10px rgba(0, 0, 0, 0.1)' }} className={`userMenu ${english ? 'right-0' : 'left-0'}`}>
             {!curr && <div>
                 <p onClick={() => {
                     setShowS(2);
                     setShowU(false);
-                }} className='menuOptn'>Log in</p>
+                }} className='menuOptn'>{langs[lang].log_in}</p>
                 <p onClick={() => {
                     setShowS(1);
                     setShowU(false);
-                }} className='menuOptn'>Sign up</p>
+                }} className='menuOptn'>{langs[lang].sign_up}</p>
             </div>}
             {curr && <div>
                 <p className='menuOptn'>Account</p>
-                <p onClick={handleWishlistClick} className='menuOptn'>Wishlist</p>
-                <p onClick={handleTripsClick} className='menuOptn'>Trips</p>
+                <p onClick={handleWishlistClick} className='menuOptn'>{langs[lang].Wishlist}</p>
+                <p onClick={handleTripsClick} className='menuOptn'>{langs[lang].Trips}</p>
             </div>}
             <div className='dummies'>
-                <p className='menuOptn'>Gift cards</p>
-                <p className='menuOptn'>Airbnb your home</p>
-                <p className='menuOptn'>Host an experience</p>
-                <p className='menuOptn'>Help center</p>
+                <p className='menuOptn'>{langs[lang].gift_cards}</p>
+                <p className='menuOptn'>{langs[lang].airbnb_your_home}</p>
+                <p className='menuOptn'>{langs[lang].host_exp}</p>
+                <p className='menuOptn'>{langs[lang].help_center}</p>
             </div>
             {curr && <p onClick={() => {
                 setCurr(null);

@@ -1,5 +1,5 @@
 .largeSearchCont{
-    @apply z-[500] rounded-full flex   shadow-md relative items-center border-[1px] h-[63px] mb-12 mt-2 md:w-[90%] lg:w-[65%] xl:w-[56%]
+    @apply z-[500] rounded-full  shadow-md relative  border-[1px] h-[63px] mb-12 mt-2 md:w-[90%] lg:w-[65%] xl:w-[56%]
 }
 .searchcrit{
     @apply hover:bg-gray-200 hover:rounded-full text-nowrap h-full
@@ -31,8 +31,8 @@
 .searchBtnCont{
     @apply flex items-center justify-between
 }
-#searchBtn{
-    @apply hover:bg-[#d22c4b] bg-[#ff385c] rounded-full w-11 h-11 flex justify-center items-center cursor-pointer z-10 absolute right-2
+.searchBtn{
+    @apply hover:bg-[#d22c4b] bg-[#ff385c] rounded-full w-11 h-11 flex justify-center items-center cursor-pointer z-10 absolute 
 }
 
 

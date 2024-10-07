@@ -1,5 +1,5 @@
 import {Bed,Users,Key,Bathtub} from '@phosphor-icons/react'
-const Services = ({title,slogan}) => {
+const Services = ({ bePut,title,slogan}) => {
     return ( 
         <div className="flex items-center gap-8 mb-4">
             <div>
@@ -9,7 +9,7 @@ const Services = ({title,slogan}) => {
                {title=='Great check-in experience' &&<Key size={26} color="#0f0f0f" />}
             </div>
             <div>
-                <h3 className="font-bold text-sm">{title}</h3>
+                <h3 className="font-bold text-sm">{bePut}</h3>
                 <p className='text-sm'>{slogan}</p>
             </div>
         </div>

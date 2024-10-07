@@ -19,7 +19,7 @@ const Homepage = () => {
     let [showDmodal,setShowDmodal]=useRecoilState(showDateModal);
     let [english,setEnglish]=useRecoilState(isEnglish);
     useEffect(()=>{
-        console.log(english);
+        console.log(JSON.parse(localStorage.getItem('isEnglish')));
         let temp2=Array(15).fill(false);
         temp2[0]=true;
         setCategories(temp2);

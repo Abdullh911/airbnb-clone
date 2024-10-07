@@ -6,7 +6,7 @@ import Navbar from './Components/Navbar/Navbar';
 import SmallNavbar from './Components/SmallNavbar/SmallNavbar';
 import FilterModal from './Components/FilterModal/FilterModal';
 import { useRecoilState } from 'recoil';
-import { isLoading, isStay, showModal, showSignup } from './StateMangement/State';
+import { isLoading, isStay, showLModal, showModal, showSignup } from './StateMangement/State';
 import SignupLogin from './Components/SignupLogin/SignupLogin';
 import Wishlist from './Pages/Wishlist/Wishlist';
 import MobUserMenu from './Components/MobUserMenu/MobUserMenu';
@@ -17,12 +17,15 @@ import SearchPage from './Pages/SearchPage/SearchPage';
 import { useEffect } from 'react';
 import MobileSearchModal from './Components/MobileSearchModal/MobileSearchModal';
 import ReservePage from './Pages/ReservePage/ReservePage';
+import LanguageModal from './Components/LanguageModal/LanguageModal';
 
 function App() {
   let [showM,setShowM]=useRecoilState(showModal);
   let [showS,setShowS]=useRecoilState(showSignup);
   let [isRoom,setIsRoom]=useRecoilState(isStay);
   let [showText,setShowText]=useRecoilState(isLoading);
+  let [LmodalShow,setLmodalShow]=useRecoilState(showLModal);
+
   useEffect(() => {
     const timer = setTimeout(() => {
         setShowText(false);
@@ -37,6 +40,7 @@ function App() {
         {showS!=0 &&<SignupLogin/>}
         {!isRoom &&<SmallNavbar/>}
         {!isRoom&&<MobUserMenu/>}
+        {<LanguageModal/>}
         <MobileSearchModal/>
         <Routes>
           <Route path="/" element={<Homepage/>}/>
@@ -47,6 +51,7 @@ function App() {
           <Route path="/search/:destination" element={<SearchPage/>}/>
           <Route path="/book/:id/:price/:nights/:inDate/:outDate" element={<ReservePage/>}/>
         </Routes>
+        
       </Router>
     </>
   )

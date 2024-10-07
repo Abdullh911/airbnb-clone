@@ -1,16 +1,18 @@
 import { useRecoilState } from "recoil";
-import { currUser, showSignup } from "../../StateMangement/State";
+import { currUser, isEnglish, langCode, showSignup } from "../../StateMangement/State";
 import './MobUserMenu.css'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import langs from '../../langs';
 const MobUserMenu = () => {
+    let [lang,setLang]=useRecoilState(langCode);
+    let [english, setEnglish]=useRecoilState(isEnglish);
     let [sClicked, setSclicked] = useState([true, ...Array(4).fill(false)]);
     let [uClicked, setUclicked] = useState([true, ...Array(2).fill(false)]);
     let [curr, setCurr] = useRecoilState(currUser);
     let [showS,setShowS]=useRecoilState(showSignup);
     let navigate=useNavigate();
-    const menuSignedTxt = ['Explore', 'Wishlist', 'Trips', 'Messages', 'Account'];
+    const menuSignedTxt = [langs[lang].explore, langs[lang].Wishlist, langs[lang].Trips, langs[lang].messages, langs[lang].account];
     const menuSignedTxtIcons = [
         <i style={{ color: sClicked[0] ? '#ff385c' : 'gray' }} class="fa-solid fa-magnifying-glass text-[25px]"></i>,
         <i style={{ color: sClicked[1] ? '#ff385c' : 'gray' }} class="fa-regular fa-heart text-[25px]"></i>,
@@ -19,7 +21,7 @@ const MobUserMenu = () => {
         <i style={{ color: sClicked[4] ? '#ff385c' : 'gray' }} class="fa-solid fa-user text-[25px]"></i>
     ];
 
-    const menuUnsignedTxt = ['Explore', 'Wishlist', 'Log in'];
+    const menuUnsignedTxt = [langs[lang].explore, langs[lang].Wishlist, langs[lang].log_in];
     const menuUnsignedTxtIcons = [
         <i style={{ color: uClicked[0] ? '#ff385c' : 'gray' }} class="fa-solid fa-magnifying-glass text-[25px]"></i>,
         <i style={{ color: uClicked[1] ? '#ff385c' : 'gray' }} class="fa-regular fa-heart text-[25px]"></i>,
