@@ -1,8 +1,12 @@
 import { useRecoilState } from "recoil";
-import { currUser, showSignup, users } from "../../StateMangement/State";
+import { currUser, isEnglish, langCode, showSignup, users } from "../../StateMangement/State";
 import './SignupLogin.css'
 import { useRef } from "react";
+import langs from '../../langs';
+
 const SignupLogin = () => {
+    let [english,setEnglish]=useRecoilState(isEnglish);
+    let [lang,setLang]=useRecoilState(langCode);
     let [showS,setShowS]=useRecoilState(showSignup);
     let [curr,setCurr]=useRecoilState(currUser);
     let [usersList,setUsersList]=useRecoilState(users);
@@ -41,12 +45,12 @@ const SignupLogin = () => {
     }
     
     return ( 
-        <div className="fixed w-full h-full z-50"> 
+        <div dir={`${english?'ltr':'rtl'}`} className="fixed w-full h-full z-50"> 
             <div className="backdrop" />
             <div className="filterModal">
                 <div className="head">
                     <div className='title'>
-                        <p>{showS==1?'Sign up':'Log in'}</p>
+                        <p>{showS==1?langs[lang].sign_up:langs[lang].log_in}</p>
                     </div>
                     <div onClick={()=>{
                         setShowS(0);
@@ -56,24 +60,24 @@ const SignupLogin = () => {
                 </div>
                 <div className="logBody">
                     <h1 className="text-[22px] font-[Poppins] mb-7">
-                        Welcome to Airbnb
+                        {langs[lang].welcomeToAirbnb}
                     </h1>
                     <div className="inputCont">
-                        <input ref={emailref} placeholder="Email" type="text" className="rounded-t-xl"/>
-                        <input ref={passref} placeholder="Password" type="text" className="rounded-b-xl" />
+                        <input ref={emailref} placeholder={langs[lang].email} type="text" className="rounded-t-xl"/>
+                        <input ref={passref} placeholder={langs[lang].password} type="text" className="rounded-b-xl" />
                     </div>
                     <p className="text-[11px] mb-3">
-                        We’ll call or text you to confirm your number. Standard message and data rates apply. <span className="underline">Privacy Policy</span>
+                        {langs[lang].messageAndDataRates}                   
                     </p>
-                    <p className="mb-5 underline" onClick={()=>{
+                    <p className="mb-5 underline w-max cursor-pointer" onClick={()=>{
                         if(showS==1){
                             setShowS(2);
                         }
                         else{
                             setShowS(1);
                         }
-                    }}>{showS==1?'Log in':'Sign up'}</p>
-                    <button onClick={userAction}>{showS==1?'Sign up':'Log in'}</button>
+                    }}>{showS==1?langs[lang].log_in:langs[lang].sign_up}</p>
+                    <button onClick={userAction}>{showS==1?langs[lang].sign_up:langs[lang].log_in}</button>
                     <div className="divide relative mb-7">
                         <p className="or">or</p>
                     </div>
@@ -81,7 +85,7 @@ const SignupLogin = () => {
                         {social.map((x,index)=>(
                             <div className="socialDiv">
                                 {socialIcons[index]}
-                                <p>Continue with {x}</p>
+                                <p>{langs[lang].continueWith} {x}</p>
                             </div>
                         ))}
                     </div>

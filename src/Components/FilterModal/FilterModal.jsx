@@ -3,8 +3,9 @@ import './FilterModal.css';
 import PriceRange from '../PriceRange/PriceRange';
 import BedCounter from '../BedCounter/BedCounter';
 import { useRecoilState } from 'recoil';
-import { currCat, initFilters, listings, showModal } from '../../StateMangement/State';
+import { currCat, initFilters, isEnglish, langCode, listings, showModal } from '../../StateMangement/State';
 import homes from '../mockData';
+import langs from '../../langs';
 const FilterModal = () => {
     let tempFilters={
         type:'Any',
@@ -19,9 +20,9 @@ const FilterModal = () => {
     let [showM,setShowM]=useRecoilState(showModal);
     let [filters,setFilters]=useState(storeFltrs);
     let [catCurr, setCatCurr]=useRecoilState(currCat);
-    
+    let [lang,setLang]=useRecoilState(langCode);
+    let [english,setEnglish]=useRecoilState(isEnglish);
     useEffect(()=>{
-        //console.log(storeFltrs);
         setFilters(storeFltrs);
         if(storeFltrs.type=="Any"){
             select(0);
@@ -76,17 +77,17 @@ const FilterModal = () => {
         setSetStoreFltrs(filters);
         setShowM(false);
     }
-    const amenities=['Wifi','Kitchen','Washer','Dryer','Air conditioning','Heating'];
+    const amenities=[langs[lang].wifi,langs[lang].kitchen,langs[lang].washer,langs[lang].dryer,langs[lang].airConditioning,langs[lang].heating];
     const amenitiesIcons=[<i class="fa-solid fa-wifi"></i>,<i class="fa-solid fa-kitchen-set"></i>,<i class="fa-solid fa-hard-drive"></i>,<i class="fa-solid fa-wind"></i>,<i class="fa-regular fa-snowflake"></i>,<i class="fa-solid fa-temperature-three-quarters"></i>]
-    const bookingOpts=['Instant book','Self check in','Free cancellation','Allow pets']
+    const bookingOpts=[langs[lang].instantBook,langs[lang].selfCheckIn,langs[lang].freeCancellation,langs[lang].allowPets]
     const bookingOptsIcons=[<i class="fa-solid fa-bolt"></i>,<i class="fa-solid fa-key"></i>,<i class="fa-regular fa-calendar-xmark"></i>,<i class="fa-solid fa-paw"></i>]
     return ( 
-        <div className="fixed w-full h-full z-40"> 
+        <div dir={`${english?'ltr':'rtl'}`} className="fixed w-full h-full z-40"> 
             <div className="backdrop" />
             <div className="filterModal">
                 <div className="head">
                     <div className='title'>
-                        <p>Filters</p>
+                        <p>{langs[lang].filterBtnLabel}</p>
                     </div>
                     <div onClick={()=>{
                         setShowM(false);
@@ -97,44 +98,44 @@ const FilterModal = () => {
                 <div className='body'>
                     <div className='type'>
                         <h1 className='mb-7 text-[19px]'>
-                            Type of place
+                        {langs[lang].typeOfPlace}
                         </h1>
                         <div className='tabs'>
                             <button className={`${chosens[0]?'bg-gray-100 border-2 border-black':''}`} onClick={()=>{
                                 select(0);
                             }}>
-                                Any type
+                                {langs[lang].anyType}
                             </button>
                             <button className={`${chosens[1]?'bg-gray-100 border-2 border-black':''}`} onClick={()=>{
                                 select(1);
                             }}>
-                                Rooms
+                                {langs[lang].rooms}
                             </button>
                             <button className={`${chosens[2]?'bg-gray-100 border-2 border-black':''}`} onClick={()=>{
                                 select(2);
                             }}>
-                                Entire home
+                                {langs[lang].entireHome}
                             </button>
                         </div>
                     </div>
                     <div className='pricee'>
                         <h1 className=' text-[19px]'>
-                            Price Range
+                        {langs[lang].priceRange}
                         </h1>
-                        <p>Nightly prices before fees and taxes</p>
+                        <p>{langs[lang].nightlyPrices}</p>
                         <PriceRange setRange={setPriceRange}/>
                     </div>
                     <div className='beds'>
                         <h1 className=' text-[19px]'>
-                            Rooms and beds
+                        {langs[lang].roomsAndBeds}
                         </h1>
-                        <BedCounter set={setBedrooms} title={"Bedrooms"}/>
-                        <BedCounter set={setBeds} title={"Beds"}/>
-                        <BedCounter title={"Bathrooms"}/>
+                        <BedCounter set={setBedrooms} title={langs[lang].bedrooms}/>
+                        <BedCounter set={setBeds} title={langs[lang].beds}/>
+                        <BedCounter title={langs[lang].bathrooms}/>
                     </div>
                     <div className='amenties'>
                         <h1 className='text-[19px] mb-5'>
-                            Amenties
+                        {langs[lang].amenities}
                         </h1>
                         <div className='amenitiesCont'>
                             {amenities.map((amenity,index)=>(
@@ -144,11 +145,11 @@ const FilterModal = () => {
                                 </div>
                             ))}
                         </div>
-                        <h1 className='showMore'>Show more    <i class="fa-solid fa-chevron-down"></i></h1>
+                        <h1 className='showMore'>{langs[lang].showMore}    <i class="fa-solid fa-chevron-down"></i></h1>
                     </div>
                     <div className='bookingOpts'>
                         <h1 className='text-[19px] mb-5'>
-                            Booking Options
+                        {langs[lang].bookingOptions}
                         </h1>
                         <div className='amenitiesCont'>
                             {bookingOpts.map((opt,index)=>(
@@ -160,30 +161,30 @@ const FilterModal = () => {
                         </div>
                     </div>
                     <div className='guestFav'>
-                        <h1 className='text-[19px] mb-5'>Standout stays</h1>
+                        <h1 className='text-[19px] mb-5'>{langs[lang].standoutStays}</h1>
                         <div className='guestFavorite w-[240px]'>
                             <i class="fa-solid fa-award text-[35px]"></i>
                             <div className='flex flex-col'>
-                                <h2>Guest favourite</h2>
-                                <p className='text-[14px] text-gray-500'>The most loved homes on Airbnb</p>
+                                <h2>{langs[lang].guestFavourite}</h2>
+                                <p className='text-[14px] text-gray-500'>{langs[lang].mostLovedHomes}</p>
                             </div>
                         </div>
                     </div>
                     <div className='guestFav'>
                         <div className='flex justify-between items-center cursor-pointer'>
-                            <h1 className='text-[19px]'>Property type</h1>
+                            <h1 className='text-[19px]'>{langs[lang].propertyType}</h1>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                     </div>
                     <div className='guestFav'>
                         <div className='flex justify-between items-center cursor-pointer'>
-                            <h1 className='text-[19px]'>Accessibility features</h1>
+                            <h1 className='text-[19px]'>{langs[lang].accessibilityFeatures}</h1>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                     </div>
                     <div className='guestFav'>
                         <div className='flex justify-between items-center cursor-pointer'>
-                            <h1 className='text-[19px]'>Host language</h1>
+                            <h1 className='text-[19px]'>{langs[lang].hostLanguage}</h1>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                     </div>
@@ -191,10 +192,10 @@ const FilterModal = () => {
                 <div className='footer'>
                     <div className='showBtnCont'>
                         <button onClick={reset} className='p-3 hover:bg-gray-200 rounded-xl font-bold'>
-                            Clear all
+                        {langs[lang].clearAll}
                         </button>
                         <button onClick={startFilter} className='p-3 bg-black text-white rounded-xl font-bold'>
-                            Show
+                        {langs[lang].show}
                         </button>
                     </div>
                 </div>

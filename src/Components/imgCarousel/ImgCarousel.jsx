@@ -8,12 +8,13 @@ import './ImgCarousel.css'
 import {Star,List,UserCircle} from '@phosphor-icons/react'
 import homes from '../mockData';
 import { useRecoilState } from 'recoil';
-import { currUser, showSignup } from '../../StateMangement/State';
+import { currUser, isEnglish, showSignup } from '../../StateMangement/State';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 const ImgCarousel = ({images}) => {
+    let [english,setEnglish]=useRecoilState(isEnglish);
     return ( 
-        <div className='carouselRoom'>
+        <div  className='carouselRoom'>
             <Swiper
                 className='h-full swiperCard'
                 spaceBetween={10}

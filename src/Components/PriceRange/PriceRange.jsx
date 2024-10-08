@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { Slider } from '@mui/material';
 import { useRecoilState } from "recoil";
-import { initFilters } from "../../StateMangement/State";
+import { initFilters, isEnglish, langCode } from "../../StateMangement/State";
+import langs from '../../langs';
+
 const PriceRange = ({setRange}) => {
     let [storeFltrs,setSetStoreFltrs]=useRecoilState(initFilters)
     const [value, setValue] = useState([storeFltrs.minPrice,storeFltrs.maxPrice])
+    let [lang,setLang]=useRecoilState(langCode);
+    let [english,setEnglish]=useRecoilState(isEnglish);
     const handleChange = (event, newValue) => {
         setValue(newValue);
         setRange(newValue);
@@ -21,7 +25,7 @@ const PriceRange = ({setRange}) => {
         setRange([value[0], newValue]);
     };
     return ( 
-        <div className="">
+        <div dir={`${english?'ltr':'rtl'}`} className="">
             <Slider 
                 max={1000}
                 getAriaLabel={() => 'Temperature range'}
@@ -45,15 +49,15 @@ const PriceRange = ({setRange}) => {
             <div className="flex justify-between">
                 <div className="flex flex-col items-center">
                     <h2 className="text-[12px] text-gray-500">
-                        Minimum
+                    {langs[lang].minimum}
                     </h2>
-                    <input onChange={handleChangeMin} value={value[0]} type="text" name="input" className="w-20 border-2 rounded-full  pl-[35%] py-2"/>
+                    <input onChange={handleChangeMin} value={value[0]} type="text" name="input" className={`${english?'pl-[35%] ':'pr-[35%]'} w-20  border-2 rounded-full   py-2`}/>
                 </div>
                 <div className="flex flex-col items-center">
                     <h2 className="text-[12px] text-gray-500">
-                        Maximum
+                    {langs[lang].maximum}
                     </h2>
-                    <input onChange={handleChangeMax} value={value[1]} type="text" name="input" className="w-20 border-2 rounded-full  pl-[35%] py-2"/>
+                    <input onChange={handleChangeMax} value={value[1]} type="text" name="input" className={` ${english?'pl-[35%] ':'pr-[35%]'} w-20 border-2 rounded-full py-2`}/>
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@ const LargeSearch = () => {
         setOutDate(langs[lang].addDate);
         setInDate(langs[lang].addDate)
         
-    },[lang])
+    },[lang]);
 
     let navigate=useNavigate();
     function setDateRange(range){

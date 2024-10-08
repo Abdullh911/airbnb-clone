@@ -1,5 +1,5 @@
 .SmallSearch{
-    @apply relative bg-white shadow-sm rounded-full flex md:w-[45%] xl:w-[24.6%] justify-between h-11 items-center border-[0.1px] border-gray-300 cursor-pointer
+    @apply relative bg-white shadow-sm rounded-full flex w-max justify-between h-11 items-center border-[0.1px] border-gray-300 cursor-pointer
 }
 .SmallSearch p{
     @apply text-[12px]  text-nowrap
