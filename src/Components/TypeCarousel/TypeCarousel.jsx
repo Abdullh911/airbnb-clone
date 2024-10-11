@@ -10,7 +10,7 @@ import 'swiper/css/autoplay';
 
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { useRecoilState } from "recoil";
-import { currCat, isEnglish, selectedCat } from "../../StateMangement/State";
+import { currCat, isEnglish, isStay, isTrips, isWishlist, selectedCat } from "../../StateMangement/State";
 import homes from "../mockData";
 import homesAr from "../mockDataAr";
 const TypeCarousel = () => {
@@ -33,6 +33,9 @@ const TypeCarousel = () => {
         <HouseLine size={25}  weight="fill" />,
         <BuildingApartment size={25}  weight="fill" />
     ]
+    let [isRoomPage,setIsRoomPage]=useRecoilState(isStay);
+    let [isWish,setIsWish]=useRecoilState(isWishlist);
+    let [isTp,setIsTp]=useRecoilState(isTrips);
     let [selected, setSelected]=useRecoilState(selectedCat);
     let [catCurr, setCatCurr]=useRecoilState(currCat);
     let [english, setEnglish]=useRecoilState(isEnglish);
@@ -49,7 +52,7 @@ const TypeCarousel = () => {
         changeSelected(0);
     },[])
     return ( 
-        <div className="typeC">
+        <div className={`typeC `}>
             <Swiper
                     className="swiperType"
                     spaceBetween={6}

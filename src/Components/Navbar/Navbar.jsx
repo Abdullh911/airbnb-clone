@@ -89,7 +89,7 @@ const Navbar = () => {
                 { <LargeSearch />}
 
             </div>
-            {!isRoomPage&&<div className={ `${english?'':'flex-row-reverse'} ${reserve?'md:hidden':'md:flex'} w-[100%] md:px-28 lg:px-0   gap-1 mb-[8px] justify-center items-center hidden -z-10`}>
+            {<div className={ ` ${english?'':'flex-row-reverse'} ${reserve||(isRoomPage||isTp||isWish)?'md:hidden':'md:flex'} w-[100%] md:px-28 lg:px-0   gap-1 mb-[8px] justify-center items-center hidden -z-10`}>
                     <div className='w-[65%] z-0'>
                         <TypeCarousel/>
                     </div>

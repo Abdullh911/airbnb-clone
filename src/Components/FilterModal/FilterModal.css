@@ -1,5 +1,5 @@
 .filterModal {
-    @apply  absolute w-[100%] md:w-[60%] lg:w-[46%] xl:w-[37%] h-[100%] md:h-[90%] bg-white z-[600] top-[6%]  left-[0%] lg:left-[32%] md:left-[20%] rounded-xl ;
+    @apply  absolute w-[100%] md:w-[60%] lg:w-[46%] xl:w-[37%] h-[100%] md:h-[90%] bg-white z-[500] top-[6%]  left-[0%] lg:left-[32%] md:left-[20%] rounded-xl ;
 }
 
 .backdrop {

@@ -40,7 +40,10 @@ const UserMenu = () => {
                 }} className='menuOptn'>{langs[lang].sign_up}</p>
             </div>}
             {curr && <div>
-                <p className='menuOptn'>Account</p>
+                <p onClick={()=>{
+                    navigate('/account');
+                    setShowU(false);
+                }} className='menuOptn'>Account</p>
                 <p onClick={handleWishlistClick} className='menuOptn'>{langs[lang].Wishlist}</p>
                 <p onClick={handleTripsClick} className='menuOptn'>{langs[lang].Trips}</p>
             </div>}
@@ -54,6 +57,7 @@ const UserMenu = () => {
                 setCurr(null);
                 setShowU(false);
                 localStorage.removeItem('user');
+                navigate('/');
             }} className='menuOptn'>Log out</p>}
         </div>
     );

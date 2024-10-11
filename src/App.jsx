@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import MobileSearchModal from './Components/MobileSearchModal/MobileSearchModal';
 import ReservePage from './Pages/ReservePage/ReservePage';
 import LanguageModal from './Components/LanguageModal/LanguageModal';
+import AccountPage from './Pages/Account/AccountPage';
 
 function App() {
   let [showM,setShowM]=useRecoilState(showModal);
@@ -47,6 +48,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist/>}/>
           <Route path="/stay/:id" element={<StayPage/>}/>
           <Route path="/trips" element={<Reservations/>}/>
+          <Route path="/account" element={<AccountPage/>}/>
           <Route path="/:category" element={<Category/>}/>
           <Route path="/search/:destination" element={<SearchPage/>}/>
           <Route path="/book/:id/:price/:nights/:inDate/:outDate" element={<ReservePage/>}/>

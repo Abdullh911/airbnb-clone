@@ -7,6 +7,7 @@ import { auth, db } from "../firebase";
 import { setDoc, doc,getDoc  } from "firebase/firestore";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import Loader from "../Loader";
+import shadows from "@mui/material/styles/shadows";
 const SignupLogin = () => {
     let [english,setEnglish]=useRecoilState(isEnglish);
     let [lang,setLang]=useRecoilState(langCode);
@@ -18,13 +19,21 @@ const SignupLogin = () => {
     const socialIcons=[<i class="fa-brands fa-facebook"></i>,<i class="fa-brands fa-google"></i>,<i class="fa-brands fa-apple"></i>]
     let emailref=useRef(null);
     let passref=useRef(null);
+    let Fnameref=useRef(null);
+    let Lnameref=useRef(null);
+
     async function userAction() {
+        if((!Fnameref.current.value || !Lnameref.current.value)&&showS==1){
+            return;
+        }
         if (showS == 1) {
             let newUser = {
                 email: emailref.current.value,
                 password: passref.current.value,
                 wishlist:[],
-                trips:[]
+                trips:[],
+                firstName: Fnameref.current.value,
+                lastName: Lnameref.current.value
             };
             try {
                 setLoad(true)
@@ -61,7 +70,7 @@ const SignupLogin = () => {
                         setCurr(foundUser);
                         localStorage.setItem('user', JSON.stringify(foundUser));
                     } else {
-                        console.log("No such user!");
+                        console.log("not found!");
                     }
                 }
                 setLoad(false)
@@ -74,7 +83,7 @@ const SignupLogin = () => {
     }
     
     return ( 
-        <div dir={`${english?'ltr':'rtl'}`} className="fixed w-full h-full z-50"> 
+        <div dir={`${english?'ltr':'rtl'}`} className="fixed w-full h-full z-[200]"> 
         {load&&<Loader/>}
             <div className="backdrop" />
             <div className="filterModal">
@@ -93,6 +102,10 @@ const SignupLogin = () => {
                         {langs[lang].welcomeToAirbnb}
                     </h1>
                     <div className="inputCont">
+                        <div  className={`w-full gap-5 flex mb-5 ${showS==1?'':'hidden'}`}>
+                            <input ref={Fnameref} placeholder={langs[lang].firstName} className="rounded-xl w-[45%]" type="text" />
+                            <input ref={Lnameref} placeholder={langs[lang].lastName} className="rounded-xl w-[45%]" type="text" />
+                        </div>
                         <input dir="ltr" ref={emailref} placeholder={langs[lang].email} type="text" className="rounded-t-xl"/>
                         <input dir="ltr" ref={passref} placeholder={langs[lang].password} type="text" className="rounded-b-xl" />
                     </div>

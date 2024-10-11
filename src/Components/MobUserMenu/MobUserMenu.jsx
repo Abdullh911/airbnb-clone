@@ -46,7 +46,9 @@ const MobUserMenu = () => {
 
             }
             else if(index===4){
-
+                if(curr!=null){
+                    navigate('/account');
+                }
             }
         }
         else{
