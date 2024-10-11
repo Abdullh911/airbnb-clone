@@ -53,6 +53,7 @@ const UserMenu = () => {
             {curr && <p onClick={() => {
                 setCurr(null);
                 setShowU(false);
+                localStorage.removeItem('user');
             }} className='menuOptn'>Log out</p>}
         </div>
     );

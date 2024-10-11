@@ -1,51 +1,81 @@
 import { useRecoilState } from "recoil";
 import { currUser, isEnglish, langCode, showSignup, users } from "../../StateMangement/State";
 import './SignupLogin.css'
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import langs from '../../langs';
-
+import { auth, db } from "../firebase";
+import { setDoc, doc,getDoc  } from "firebase/firestore";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import Loader from "../Loader";
 const SignupLogin = () => {
     let [english,setEnglish]=useRecoilState(isEnglish);
     let [lang,setLang]=useRecoilState(langCode);
     let [showS,setShowS]=useRecoilState(showSignup);
     let [curr,setCurr]=useRecoilState(currUser);
     let [usersList,setUsersList]=useRecoilState(users);
+    let [load,setLoad]=useState(false);
     const social=['Facebook','Google','Apple'];
     const socialIcons=[<i class="fa-brands fa-facebook"></i>,<i class="fa-brands fa-google"></i>,<i class="fa-brands fa-apple"></i>]
     let emailref=useRef(null);
     let passref=useRef(null);
-    function userAction() {
-        if (showS == 1) { 
+    async function userAction() {
+        if (showS == 1) {
             let newUser = {
                 email: emailref.current.value,
                 password: passref.current.value,
                 wishlist:[],
                 trips:[]
             };
-    
-            const foundUser = usersList.find(user => user.email === emailref.current.value);
-            if (!foundUser) {
-                let updatedUsersList = [...usersList, newUser]; 
-                setUsersList(updatedUsersList); 
+            try {
+                setLoad(true)
+                await createUserWithEmailAndPassword(auth, emailref.current.value, passref.current.value);
+                const user = auth.currentUser;
+                console.log(user);
+                if (user) {
+                    await setDoc(doc(db, "Users", user.uid),newUser);
+                }
+                console.log(newUser);
+                newUser.uid = user.uid;
                 setCurr(newUser); 
+                localStorage.setItem('user', JSON.stringify(newUser));
+                setLoad(false)
                 setShowS(0); 
-            } else {
-                console.log('User already exists');
-            }
+                } catch (error) {
+                    setLoad(false)
+                    console.log(error.message);
+                }
+             
         } 
         else if (showS == 2) {
-            const foundUser = usersList.find(user => user.email === emailref.current.value);
-            if (foundUser && foundUser.password==passref.current.value) {
-                setCurr(foundUser);
-                setShowS(0); 
-            } else {
-                console.log('User not found');
+            try {
+                setLoad(true)
+                await signInWithEmailAndPassword(auth, emailref.current.value, passref.current.value);
+                const user = auth.currentUser;
+                if (user) {
+                    const userDocRef = doc(db, "Users", user.uid);
+                    const userSnapshot = await getDoc(userDocRef);
+                    if (userSnapshot.exists()) {
+                        const foundUser = userSnapshot.data();
+                        foundUser.uid=user.uid;
+                        console.log(foundUser);
+                        setCurr(foundUser);
+                        localStorage.setItem('user', JSON.stringify(foundUser));
+                    } else {
+                        console.log("No such user!");
+                    }
+                }
+                setLoad(false)
+                setShowS(0);
+            } catch (error) {
+                console.log(error.message);
+                setLoad(false)
             }
         }
     }
     
     return ( 
         <div dir={`${english?'ltr':'rtl'}`} className="fixed w-full h-full z-50"> 
+        {load&&<Loader/>}
             <div className="backdrop" />
             <div className="filterModal">
                 <div className="head">
@@ -63,8 +93,8 @@ const SignupLogin = () => {
                         {langs[lang].welcomeToAirbnb}
                     </h1>
                     <div className="inputCont">
-                        <input ref={emailref} placeholder={langs[lang].email} type="text" className="rounded-t-xl"/>
-                        <input ref={passref} placeholder={langs[lang].password} type="text" className="rounded-b-xl" />
+                        <input dir="ltr" ref={emailref} placeholder={langs[lang].email} type="text" className="rounded-t-xl"/>
+                        <input dir="ltr" ref={passref} placeholder={langs[lang].password} type="text" className="rounded-b-xl" />
                     </div>
                     <p className="text-[11px] mb-3">
                         {langs[lang].messageAndDataRates}                   

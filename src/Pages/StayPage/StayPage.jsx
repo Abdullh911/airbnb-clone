@@ -34,6 +34,10 @@ const StayPage = () => {
         setIsload(false);
         window.scrollTo(0, 0);
     },[id]);
+    useEffect(()=>{
+        console.log(homes[id-1]);
+        
+    },[])
     useEffect(() => {
         const handleScroll = () => {
             setIsRoomPage(true);

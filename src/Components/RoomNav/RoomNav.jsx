@@ -1,32 +1,39 @@
 import { useEffect, useState } from 'react';
 import './RoomNav.css'
-import { useRecoilState } from 'recoil';
-import { currUser, showSignup } from '../../StateMangement/State';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { currUser, showSignup, userFunctions } from '../../StateMangement/State';
 import { useNavigate } from 'react-router-dom';
 const RoomNav = ({home}) => {
     let [curr,setCurr]=useRecoilState(currUser);
     let [showS,setShowS]=useRecoilState(showSignup);
     let [iconStyle,setIconStyle]=useState("");
     let navigate=useNavigate();
-    function addFav() {
+    const { replaceUser } = useRecoilValue(userFunctions);
+    async function addFav() {
         if (curr) {
             let temp = { ...curr, wishlist: [...curr.wishlist] };
-            if(checkIsFav()){
-                const index = temp.wishlist.findIndex(obj => obj.id === home.id);
-                temp.wishlist.splice(index, 1);
-            }
-            else{
+            if (checkIsFav()) {
+                const index = temp.wishlist.findIndex(obj => obj === home.id);
+                if (index !== -1) {
+                    temp.wishlist.splice(index, 1); 
+                }
+            } else {
                 temp.wishlist.push(home.id);
+                console.log(`Added ${home.id} to wishlist.`);
             }
-            setCurr(temp);            
+            console.log(temp);
+            setCurr(temp);
+            await replaceUser(temp);
+            localStorage.setItem('user', JSON.stringify(temp));
         } else {
             setShowS(1); 
         }
     }
+    
     function checkIsFav(){
         let isFavorite;
         if(curr){
-            isFavorite = curr.wishlist.includes( home.id);
+            isFavorite = curr.wishlist.includes(home.id);
         }
         return isFavorite;
     }

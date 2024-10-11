@@ -1,17 +1,32 @@
-import { useRecoilState } from "recoil";
-import { currUser, isStay, isTrips } from "../../StateMangement/State";
-import { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { currUser, isStay, isTrips, userFunctions } from "../../StateMangement/State";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../Components/Loader";
 
 const Reservations = () => {
     let [curr,setCurr]=useRecoilState(currUser);
     let [isRoomPage,setIsRoomPage] = useRecoilState(isStay);
-    let [isTp,setIsTp] = useRecoilState(isTrips)
+    let [isTp,setIsTp] = useRecoilState(isTrips);
+    const { getUser } = useRecoilValue(userFunctions);
+    let [load,setLoad]=useState(false);
+
     let navigate=useNavigate();
     useEffect(()=>{
         console.log(curr);
         setIsTp(true);
+        async function setUser(){
+            setLoad(true);
+            setCurr(await getUser());
+            setLoad(false);
+        }
+        setUser();
     },[])
+    if(load){
+        return(
+            <Loader/>
+        )
+    }
     return ( 
         <div className="relative top-32  p-5">
             {curr&&<div className="flex flex-wrap gap-5 pl-7">

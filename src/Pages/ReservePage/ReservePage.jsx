@@ -1,5 +1,5 @@
-import { useRecoilState } from "recoil";
-import { currUser, isReservePage, showSignup } from "../../StateMangement/State";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { currUser, isReservePage, showSignup, userFunctions } from "../../StateMangement/State";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './ReservePage.css'
@@ -8,6 +8,7 @@ import Loader from "../../Components/Loader";
 import { langCode, mobileSearchModal,isEnglish } from '../../StateMangement/State';
 import langs from '../../langs';
 const ReservePage = () => {
+    const { replaceUser } = useRecoilValue(userFunctions);
     let {id,price,nights,inDate,outDate}=useParams();
     let [reserve,setReserve]=useRecoilState(isReservePage);
     let [showSmodal,setShowSmodal]=useRecoilState(showSignup);
@@ -24,7 +25,7 @@ const ReservePage = () => {
         };
     },[])
 
-    function reserveHome(){
+    async function reserveHome(){
         let reservation={
             start:inDate,
             end:outDate,
@@ -35,6 +36,7 @@ const ReservePage = () => {
         if(nights>0 && curr){
             let temp = { ...curr, trips: [...curr.trips] };
             temp.trips.push(reservation);
+            replaceUser(temp);
             setCurr(temp);
             setLoading(true);
             setTimeout(() => {

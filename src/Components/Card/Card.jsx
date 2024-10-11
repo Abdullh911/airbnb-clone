@@ -8,12 +8,15 @@ import './Card.css';
 import {Star,List,UserCircle} from '@phosphor-icons/react'
 import homes from '../mockData';
 import { useRecoilState } from 'recoil';
-import { currUser, isEnglish, isLoading, langCode, showSignup } from '../../StateMangement/State';
+import { currUser, isEnglish, isLoading, langCode, showSignup, userFunctions } from '../../StateMangement/State';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loading from '../../assets/Loading.png'
 import homesAr from '../mockDataAr';
+import { useRecoilValue } from 'recoil';
+
 const Card = ({ home }) => {
+    const { replaceUser } = useRecoilValue(userFunctions);
     let [curr,setCurr]=useRecoilState(currUser);
     let [showS,setShowS]=useRecoilState(showSignup);
     let [iconStyle,setIconStyle]=useState("");
@@ -23,26 +26,30 @@ const Card = ({ home }) => {
     let navigate=useNavigate();
     useEffect(()=>{
         setData(english?homes[home.id-1]:homesAr[home.id-1]);
-    },[english])
-    function addFav() {
-        
+    },[english]);
+    
+    
+    async function addFav() {
         if (curr) {
             let temp = { ...curr, wishlist: [...curr.wishlist] };
-            if(checkIsFav()){
-                const index = temp.wishlist.findIndex(obj => obj.id === home.id);
-                temp.wishlist.splice(index, 1);
-            }
-            else{
+            if (checkIsFav()) {
+                const index = temp.wishlist.findIndex(obj => obj === home.id);
+                if (index !== -1) {
+                    temp.wishlist.splice(index, 1); 
+                }
+            } else {
                 temp.wishlist.push(home.id);
+                console.log(`Added ${home.id} to wishlist.`);
             }
             console.log(temp);
-            
-            setCurr(temp);            
+            setCurr(temp);
+            await replaceUser(temp);
+            localStorage.setItem('user', JSON.stringify(temp));
         } else {
             setShowS(1); 
         }
-        
     }
+    
     function checkIsFav(){
         let isFavorite;
         if(curr){

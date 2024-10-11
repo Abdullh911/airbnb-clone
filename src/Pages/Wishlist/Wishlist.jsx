@@ -1,11 +1,12 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import './Wishlist.css'
-import { currUser, isEnglish, isStay, isWishlist, langCode } from '../../StateMangement/State';
+import { currUser, isEnglish, isStay, isWishlist, langCode, userFunctions } from '../../StateMangement/State';
 import Card from '../../Components/Card/Card';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import homes from '../../Components/mockData';
 import homesAr from '../../Components/mockDataAr';
+import Loader from '../../Components/Loader';
 const Wishlist = () => {
     let [curr,setCurr]=useRecoilState(currUser);
     let [isRoomPage,setIsRoomPage]=useRecoilState(isStay);
@@ -13,11 +14,20 @@ const Wishlist = () => {
     let [english,setEnglish]=useRecoilState(isEnglish);
     let [lang,setLang]=useRecoilState(langCode);
     let navigate=useNavigate();
+    const { getUser } = useRecoilValue(userFunctions);
+    let [load,setLoad]=useState(false);
     useEffect(()=>{
         setIsWish(true);
-    },[])
+        async function setUser(){
+            setLoad(true);
+            setCurr(await getUser());
+            setLoad(false);
+        }
+        setUser();
+    },[]);
     return ( 
         <div>
+            {load&&<Loader/>}
             {curr&&<div className="wishContainer">
                 {curr.wishlist.map(homeId => (
                     <Card key={homeId} home={english?homes[homeId-1]:homesAr[homeId-1]} />

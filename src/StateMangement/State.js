@@ -1,10 +1,14 @@
-import { atom ,selector} from 'recoil';
+import { atom, selector } from 'recoil';
+import { db } from '../Components/firebase';
+import { setDoc, doc,getDoc  } from "firebase/firestore";
 
 import homes from '../Components/mockData';
 import homesAr from '../Components/mockDataAr';
 export const isEnglish = atom({
-    key: 'isEnglish', 
-    default: JSON.parse(localStorage.getItem('isEnglish')) && true,
+    key: 'isEnglish',
+    default: JSON.parse(localStorage.getItem('isEnglish')) !== null 
+        ? JSON.parse(localStorage.getItem('isEnglish')) 
+        : true,
 });
 export const langCode = atom({
     key: 'langCode', 
@@ -42,7 +46,7 @@ export const showUserMenu = atom({
 });
 export const currUser = atom({
     key: 'currUser', 
-    default: null,
+    default:getUser(),
 });
 export const users = atom({
     key: 'users', 
@@ -101,3 +105,36 @@ export const isReservePage = atom({
     key: 'isReservePage', 
     default: false,
 });
+async function replaceUser(newUserObj) {
+    const userRef = doc(db, "Users", newUserObj.uid);
+    try {
+        await setDoc(userRef, newUserObj);
+        console.log("User replaced successfully");
+    } catch (error) {
+        console.log("Error replacing user: ", error); 
+    }
+}
+async function getUser(){
+    let inUser=JSON.parse(localStorage.getItem('user'));
+    if (inUser) {
+        const userDocRef = doc(db, "Users", inUser.uid);
+        const userSnapshot = await getDoc(userDocRef);
+        if (userSnapshot.exists()) {
+            const foundUser = userSnapshot.data();
+            foundUser.uid=inUser.uid;
+            
+            localStorage.setItem('user', JSON.stringify(foundUser));
+            return foundUser;
+        } else {
+            return null;
+        }
+    }
+}
+export const userFunctions = selector({
+    key: 'userFunctions',
+    get: () => ({
+      replaceUser: replaceUser,
+      getUser:getUser,
+    })
+});
+
