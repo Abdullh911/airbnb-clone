@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import langs from '../../langs';
 import { auth, db } from "../firebase";
 import { setDoc, doc,getDoc  } from "firebase/firestore";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword,getAuth, signInWithPopup, FacebookAuthProvider,GoogleAuthProvider } from "firebase/auth";
 import Loader from "../Loader";
 import shadows from "@mui/material/styles/shadows";
 const SignupLogin = () => {
@@ -21,6 +21,47 @@ const SignupLogin = () => {
     let passref=useRef(null);
     let Fnameref=useRef(null);
     let Lnameref=useRef(null);
+    async function authUsingProv(providerIndex){
+        let provider;
+        if(providerIndex==1){
+            provider = new GoogleAuthProvider();
+        }
+        else if(providerIndex==0){
+            provider = new FacebookAuthProvider();
+        }
+        signInWithPopup(auth, provider).then(async (result) => {
+            console.log(result);
+            const user = result.user;
+            if (user) {
+                const userDocRef = doc(db, "Users", user.uid);
+                const userSnapshot = await getDoc(userDocRef);
+                if(userSnapshot.exists()){
+                    const foundUser = userSnapshot.data();
+                    foundUser.uid=user.uid;
+                    console.log(foundUser);
+                    setCurr(foundUser);
+                    localStorage.setItem('user', JSON.stringify(foundUser));
+                }
+                else{
+                    let newUser = {
+                        email: user.email,
+                        password: "",
+                        wishlist:[],
+                        trips:[],
+                        firstName: user.displayName,
+                        lastName: ""
+                    };
+                    await setDoc(doc(db, "Users", user.uid),newUser);
+                    newUser.uid = user.uid;
+                    setCurr(newUser); 
+                    localStorage.setItem('user', JSON.stringify(newUser));
+                    
+                }
+                setShowS(0);
+            }
+          });
+
+    }
 
     async function userAction() {
         if((!Fnameref.current.value || !Lnameref.current.value)&&showS==1){
@@ -126,7 +167,9 @@ const SignupLogin = () => {
                     </div>
                     <div>
                         {social.map((x,index)=>(
-                            <div className="socialDiv">
+                            <div onClick={()=>{
+                                authUsingProv(index);
+                            }} className="socialDiv">
                                 {socialIcons[index]}
                                 <p>{langs[lang].continueWith} {x}</p>
                             </div>
