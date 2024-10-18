@@ -49,7 +49,14 @@ const TypeCarousel = () => {
     }
     
     useEffect(()=>{
-        changeSelected(0);
+        const path = window.location.pathname;
+        const extractedPart = path.substring(1);
+        for(let i=0;i<types.length;i++){
+            if(extractedPart.toLowerCase()==types[i] ||extractedPart.toLowerCase()==typesAr[i]){
+                changeSelected(i);
+                break;
+            }
+        }
     },[])
     return ( 
         <div className={`typeC `}>

@@ -4,6 +4,7 @@ import { setDoc, doc,getDoc  } from "firebase/firestore";
 
 import homes from '../Components/mockData';
 import homesAr from '../Components/mockDataAr';
+import { getAllHomes } from '../Components/dataFetch';
 export const isEnglish = atom({
     key: 'isEnglish',
     default: JSON.parse(localStorage.getItem('isEnglish')) !== null 
@@ -24,7 +25,7 @@ export const showLModal = atom({
   });
 export const listings = atom({
     key: 'listings', 
-    default: isEnglish?homes:homesAr,
+    default: getAllHomes(isEnglish?"en":'ar'),
 });
 export const showModal = atom({
     key: 'showModal', 
@@ -37,7 +38,7 @@ export const initFilters = atom({
         minBeds:0,
         minBedrooms:0,
         minPrice:0,
-        maxPrice:1000
+        maxPrice:30000
     },
 });
 export const showUserMenu = atom({

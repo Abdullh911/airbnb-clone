@@ -24,23 +24,23 @@ const MobileRegionContainer = ({show,setDest}) => {
                 {contImgs.map((cont,index)=>(
                     <div onClick={()=>{
                         if(index==0){
-                            setDest("flexible")
+                            setDest(english?"flexible":'مرن')
                         }
                         else{
                            if(index==1){
-                            setDest("europe")
+                            setDest(langs[lang].europe)
                            } 
                            else if(index==2){
-                            setDest("italy")
+                            setDest(langs[lang].italy)
                            }
                            else if(index==3){
-                            setDest("united states")
+                            setDest(langs[lang].unitedStates)
                            }
                            else if(index==4){
-                            setDest("greece")
+                            setDest(langs[lang].greece)
                            }
                            else if(index==5){
-                            setDest("southeast asia")
+                            setDest(langs[lang].southeastAsia)
                            }
                         }
                     }} className='regionCard'>

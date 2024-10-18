@@ -12,7 +12,7 @@ const FilterModal = () => {
         minBeds:0,
         minBedrooms:0,
         minPrice:0,
-        maxPrice:1000
+        maxPrice:30000
     }
     let [list,setList]=useRecoilState(listings);
     const [chosens,setChosens]=useState([true,false,false]);

@@ -27,7 +27,7 @@ const PriceRange = ({setRange}) => {
     return ( 
         <div dir={`${english?'ltr':'rtl'}`} className="">
             <Slider 
-                max={1000}
+                max={30000}
                 getAriaLabel={() => 'Temperature range'}
                 value={value}
                 onChange={handleChange}
@@ -51,13 +51,13 @@ const PriceRange = ({setRange}) => {
                     <h2 className="text-[12px] text-gray-500">
                     {langs[lang].minimum}
                     </h2>
-                    <input onChange={handleChangeMin} value={value[0]} type="text" name="input" className={`${english?'pl-[35%] ':'pr-[35%]'} w-20  border-2 rounded-full   py-2`}/>
+                    <input onChange={handleChangeMin} value={value[0]} type="text" name="input" className={`${english?'pl-[28%] ':'pr-[35%]'} w-20  border-2 rounded-full   py-2`}/>
                 </div>
                 <div className="flex flex-col items-center">
                     <h2 className="text-[12px] text-gray-500">
                     {langs[lang].maximum}
                     </h2>
-                    <input onChange={handleChangeMax} value={value[1]} type="text" name="input" className={` ${english?'pl-[35%] ':'pr-[35%]'} w-20 border-2 rounded-full py-2`}/>
+                    <input onChange={handleChangeMax} value={value[1]} type="text" name="input" className={` ${english?'pl-[28%] ':'pr-[35%]'} w-20 border-2 rounded-full py-2`}/>
                 </div>
             </div>
         </div>

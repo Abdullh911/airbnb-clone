@@ -25,7 +25,7 @@ const Reserve = ({price,home}) => {
         if(nights==0){
             return;
         }
-        navigate(`/book/${home.id}/${home.pricePerNight}/${nights}/${start}/${end}`);
+        navigate(`/book/${home}/${price}/${nights}/${start}/${end}`);
     }
     return ( 
         <>

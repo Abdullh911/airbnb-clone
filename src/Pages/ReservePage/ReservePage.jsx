@@ -7,6 +7,7 @@ import homes from "../../Components/mockData";
 import Loader from "../../Components/Loader";
 import { langCode, mobileSearchModal,isEnglish } from '../../StateMangement/State';
 import langs from '../../langs';
+import { getDocumentById } from "../../Components/dataFetch";
 const ReservePage = () => {
     const { replaceUser } = useRecoilValue(userFunctions);
     let {id,price,nights,inDate,outDate}=useParams();
@@ -17,8 +18,15 @@ const ReservePage = () => {
     let [lang,setLang]=useRecoilState(langCode);
     let [english,setEnglish]=useRecoilState(isEnglish);
     let navigate=useNavigate();
+    let [data,setData]=useState(null);
     useEffect(()=>{
-        
+        async function update(){
+            let x=await getDocumentById(english?"homes":"homesAr",id);
+            console.log(x);
+            
+            setData(x);
+        }
+        update();
         setReserve(true);
         return ()=>{
             setReserve(false);
@@ -31,7 +39,7 @@ const ReservePage = () => {
             end:outDate,
             total:nights*price,
             nights:nights,
-            home:homes[id-1]
+            home:data
         }
         if(nights>0 && curr){
             let temp = { ...curr, trips: [...curr.trips] };
@@ -48,7 +56,7 @@ const ReservePage = () => {
             setShowSmodal(true);
         }
     }
-    if(loading){
+    if(!data){
         return (
             <Loader/>
         )
@@ -89,18 +97,18 @@ const ReservePage = () => {
                 <div className="w-full md:w-[40%] border-2 h-max p-8 rounded-2xl">
                     <div>
                         <div className="roomData">
-                            <img src={homes[id-1].pictures[0]} alt="" />
+                            <img src={data.pictures[0].url} alt="" />
                             <div>
-                                <p>{homes[id-1].title}</p>
-                                <p>{homes[id-1].type}</p>
-                                <p><i class="fa-solid fa-star"></i> {homes[id-1].rating} </p>
+                                <p>{data.title}</p>
+                                <p>{data.type}</p>
+                                <p><i class="fa-solid fa-star"></i> {data.rating} </p>
                             </div>
                         </div>
                         <div>
                             <h1 className="text-xl font-semibold mb-5 ">{langs[lang].priceDetails}</h1>
                             <div className="flex justify-between mb-5">
-                                <p>{homes[id-1].pricePerNight}$  {nights}X </p>
-                                <p>{nights*homes[id-1].pricePerNight}$</p>
+                                <p>{data.pricePerNight}$  {nights}X </p>
+                                <p>{nights*data.pricePerNight}$</p>
                             </div>
                             <div className="flex justify-between border-b-2 pb-5 mb-5">
                                 <p>{langs[lang].longStayDiscount}</p>
@@ -109,7 +117,7 @@ const ReservePage = () => {
                         </div>
                         <div className="flex justify-between pb-5 mb-5">
                             <p>{langs[lang].total}</p>
-                            <p>{nights*homes[id-1].pricePerNight-30}$</p>
+                            <p>{nights*data.pricePerNight-30}$</p>
                         </div>
                     </div>
                 </div>

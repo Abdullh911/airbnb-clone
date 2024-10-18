@@ -17,13 +17,15 @@ import RoomNav from "../../Components/RoomNav/RoomNav";
 import ImgCarousel from "../../Components/imgCarousel/ImgCarousel";
 import langs from '../../langs';
 import homesAr from "../../Components/mockDataAr";
+import { getDocumentById } from "../../Components/dataFetch";
+import Loader from "../../Components/Loader";
 
 const StayPage = () => {
     let {id}=useParams();
     let [english,setEnglish]=useRecoilState(isEnglish);
 
     let [isRoomPage,setIsRoomPage]=useRecoilState(isStay);
-    let [data,setData]=useState(english?homes[id-1]:homesAr[id-1]);
+    let [data,setData]=useState(null);
     let [showCmodal,setShowCmodal]=useRecoilState(showContModal);
     let [showDmodal,setShowDmodal]=useRecoilState(showDateModal);
     let [isLoad,setIsload]=useRecoilState(isLoading);
@@ -33,11 +35,15 @@ const StayPage = () => {
         setIsRoomPage(true);
         setIsload(false);
         window.scrollTo(0, 0);
+        async function update(){
+            let temp=await getDocumentById(english?"homes":"homesAr",id);
+            console.log(temp);
+            setData(temp)
+            
+            
+        }
+        update();
     },[id]);
-    useEffect(()=>{
-        console.log(homes[id-1]);
-        
-    },[])
     useEffect(() => {
         const handleScroll = () => {
             setIsRoomPage(true);
@@ -50,29 +56,31 @@ const StayPage = () => {
             setIsRoomPage(false);
         };
     }, []);
-
+    if(!data){
+        return <Loader/>
+    }
     return ( 
         <div onClick={()=>{
             setIsRoomPage(true);
             setShowCmodal(false); 
         }} className="w-full">
-            <RoomNav home={homes[id-1]}/>
+            <RoomNav home={data}/>
             <ImgCarousel images={data.pictures} />
             <div className="stayAll">
-            <SmallPayment home={homes[id-1]} price={data.pricePerNight}/>
+            <SmallPayment home={data} price={data.pricePerNight}/>
             
             <div  className="stayBody">
                 <h1 dir={`${english?'ltr':'rtl'}`} className="hidden md:block text-[26px] mb-7">{data.title}</h1>
                 
                 <div className="imgs">
                     <div className="soloImg">
-                        <img src={data.pictures[0]} alt="" />
+                        <img src={data.pictures[0].url} alt="" />
                     </div>
                     <div className="grpImgs">
-                        <img src={data.pictures[1]} alt="" />
-                        <img className="rounded-tr-xl" src={data.pictures[2]} alt="" />
-                        <img src={data.pictures[3]} alt="" />
-                        <img className="rounded-br-xl" src={data.pictures[4]} alt="" />
+                        <img src={data.pictures[1].url} alt="" />
+                        <img className="rounded-tr-xl" src={data.pictures[2].url} alt="" />
+                        <img src={data.pictures[3].url} alt="" />
+                        <img className="rounded-br-xl" src={data.pictures[4].url} alt="" />
                     </div>
                     <div className="showAllPics">
                         <i class="fa-solid fa-table-cells"></i>
@@ -82,7 +90,7 @@ const StayPage = () => {
                 <div className="stayDetails">
                     <div className={`flex w-full justify-between pr-[5%] ${english?'':'flex-row-reverse'}`}>
                         <div dir={`${english?'ltr':'rtl'}`} className="description">
-                            <h2 className="text-[23px]">{langs[lang].entire}  {langs[lang].in} {data.city+", "+data.country}</h2>
+                            <h2 className="text-[23px]">{langs[lang].entire}  {langs[lang].in} {data.cityCountry}</h2>
                             <p  className="mb-7">6 {langs[lang].guests} · {data.bedrooms} {langs[lang].bedrooms} · {data.beds} {langs[lang].beds} · 1 {langs[lang].baths}</p>
                             <div className="guestFavoriteHome">
                                 <img className="rome" src={img} alt="" />
@@ -111,7 +119,7 @@ const StayPage = () => {
                             <Offers/>
                         </div>
                         <div className="w-[33%] shadow-2xl h-[30%] p-5 rounded-xl border-[1px] hidden md:block">
-                            <Reserve home={homes[id-1]} price={data.pricePerNight}/>
+                            <Reserve home={id} price={data.pricePerNight}/>
                         </div>
                         
                     </div>

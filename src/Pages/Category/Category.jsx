@@ -5,6 +5,7 @@ import { cats, initFilters, isEnglish, isLoading, isStay, isTrips, isWishlist, l
 import CardContainer from "../../Components/CardContainer/CardContainer";
 import homes from "../../Components/mockData";
 import homesAr from "../../Components/mockDataAr";
+import { getAllHomes } from "../../Components/dataFetch";
 
 const Category = () => {
     let {category}=useParams();
@@ -18,11 +19,12 @@ const Category = () => {
     let [filters,setFilters]=useRecoilState(initFilters);
     let [english,setEnglish]=useRecoilState(isEnglish);
     useEffect(() => {
+        setShowText(true)
         const timer = setTimeout(() => {
             setShowText(false);
         }, 3000); 
         return () => clearTimeout(timer);
-    }, []);
+    }, [category]);
     useEffect(()=>{
         setIsTp(false);
         setIsWish(false);
@@ -32,10 +34,11 @@ const Category = () => {
 
     useEffect(()=>{
         const filterListings = (listingss) => {
+            console.log(filters);
             
             if(filters.type === 'Any'){
                 return listingss.filter(listing => 
-                    listing.category.toLowerCase()===category.toLocaleLowerCase()&&
+                    listing.category.toLowerCase()===category.toLowerCase()&&
                     listing.beds >= filters.minBeds &&
                     listing.bedrooms >= filters.minBedrooms &&
                     listing.pricePerNight >= filters.minPrice &&
@@ -43,7 +46,7 @@ const Category = () => {
                   )
             }
             return listingss.filter(listing => 
-                listing.category.toLowerCase()===category.toLocaleLowerCase()&&
+                listing.category.toLowerCase()===category.toLowerCase()&&
               listing.type === filters.type &&
               listing.beds >= filters.minBeds &&
               listing.bedrooms >= filters.minBedrooms &&
@@ -52,9 +55,23 @@ const Category = () => {
             )
         }
         console.log(filters);
+        async function update(){
+            let language=english?'en':'ar';
+            let preTemp=await getAllHomes(language);
+            console.log(preTemp);
+            
+            let temp=filterListings(preTemp);
+            console.log(temp);
+            
+            setFiltered(temp);
+        }
+        setShowText(true)
+        update();
+        const timer = setTimeout(() => {
+            setShowText(false);
+        }, 1500); 
         
-        let temp=filterListings(english?homes:homesAr);
-        setFiltered(temp);
+        return () => clearTimeout(timer);
     },[filters,category]);
 
 

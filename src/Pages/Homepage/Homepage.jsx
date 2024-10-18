@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { cats, initFilters, isEnglish, isLoading, isStay, isTrips, isWishlist, listings, selectedCat, showContModal, showDateModal } from "../../StateMangement/State";
 import homes from "../../Components/mockData";
 import homesAr from "../../Components/mockDataAr";
+import { getAllHomes } from "../../Components/dataFetch";
 const Homepage = () => {
     let [isRoomPage,setIsRoomPage]=useRecoilState(isStay);
     let [isWish,setIsWish]=useRecoilState(isWishlist);
@@ -19,15 +20,20 @@ const Homepage = () => {
     let [showDmodal,setShowDmodal]=useRecoilState(showDateModal);
     let [english,setEnglish]=useRecoilState(isEnglish);
     useEffect(()=>{
-        console.log(JSON.parse(localStorage.getItem('isEnglish')));
-        let temp2=Array(15).fill(false);
-        temp2[0]=true;
-        setCategories(temp2);
-        let temp=english?homes:homesAr;
-        temp=temp.filter(listing=>
-            listing.category==="icons" || listing.category==="أيقونات"
-        );
-        setFiltered(temp);
+        async function update(){
+            let temp2=Array(15).fill(false);
+            temp2[0]=true;
+            setCategories(temp2);
+            let language=english?'en':'ar';
+            let temp=await getAllHomes(language);
+            setFiltered(temp);
+        }
+        setShowText(true)
+        update();
+        const timer = setTimeout(() => {
+            setShowText(false);
+        }, 1500); 
+        return () => clearTimeout(timer);
     },[]);
     useEffect(()=>{
         setIsTp(false);
@@ -57,18 +63,17 @@ const Homepage = () => {
               listing.pricePerNight <= filters.maxPrice
             )
         }
-        let temp=filterListings(english?homes:homesAr);
-        setFiltered(temp);
+        
+        async function update() {
+            let temp=await getAllHomes(english?'en':'ar');
+            temp=filterListings(temp);
+            setFiltered(temp);
+        }
+        update();
+        
     },[filters]);
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         setShowText(false);
-    //     }, 3000); 
-    //     return () => clearTimeout(timer);
-    // }, []);
     return ( 
         <div className="homepage">
-            
             <CardContainer/>
         </div>
      );

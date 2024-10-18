@@ -23,23 +23,23 @@ const ContinentModal = ({setDestination}) => {
                 {contImgs.map((cont,index)=>(
                     <div onClick={()=>{
                         if(index==0){
-                            setDestination("flexible")
+                            setDestination(english?"flexible":'مرن')
                         }
                         else{
                            if(index==1){
-                            setDestination("europe")
+                            setDestination(langs[lang].europe)
                            } 
                            else if(index==2){
-                            setDestination("italy")
+                            setDestination(langs[lang].italy)
                            }
                            else if(index==3){
-                            setDestination("united states")
+                            setDestination(langs[lang].unitedStates)
                            }
                            else if(index==4){
-                            setDestination("greece")
+                            setDestination(langs[lang].greece)
                            }
                            else if(index==5){
-                            setDestination("southeast asia")
+                            setDestination(langs[lang].southeastAsia)
                            }
                         }
                     }} className='contCard'>
