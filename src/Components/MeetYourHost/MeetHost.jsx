@@ -7,7 +7,7 @@ const MeetHost = () => {
     let [english,setEnglish]=useRecoilState(isEnglish);
     return ( 
         <div dir={`${english?'ltr':'rtl'}`} className='mt-7 mb-96'>
-            <h2 className="font-bold text-[20px] ">{langs[lang].meetYourHost}</h2>
+            <h2 className="text-[25px] mb-5 font-semibold font-[Poppins]">{langs[lang].meetYourHost}</h2>
             <div className="w-full flex justify-center">
                 <div className="flex flex-col items-center w-full shadow rounded-2xl ">
                     <div className="flex gap-10 shadow rounded-2xl mt-4 p-10 w-[90%] justify-center">

@@ -156,9 +156,11 @@ const languages = {
         "messageAndDataRates": "We’ll call or text you to confirm your number. Standard message and data rates apply.",
         "continueWith": "Continue with",
         "search": "Search",
-        "whenIsYourTrip": "When is your trip?"
+        "whenIsYourTrip": "When is your trip?",
+        "whereYoullBe": "Where you’ll be"
 },
     "ar": {
+        "whereYoullBe": "أين ستكون",
         "Account": "حساب",
     "Learn_More": "تعلم أكثر",
         "personalInfo": "المعلومات الشخصية",
@@ -320,6 +322,7 @@ const languages = {
         
 },
 "es": {
+    "whereYoullBe": "Donde estarás",
     "Account": "Cuenta",
     "Learn_More": "Aprender más",
     "personalInfo": "Información personal",
@@ -477,6 +480,7 @@ const languages = {
         "continueWith": "Continuar con"
     },
     "fr": {
+        "whereYoullBe": "Où vous serez",
         "Account": "Compte",
     "Learn_More": "En savoir plus",
         "personalInfo": "Informations personnelles",

@@ -19,6 +19,7 @@ import langs from '../../langs';
 import homesAr from "../../Components/mockDataAr";
 import { getDocumentById } from "../../Components/dataFetch";
 import Loader from "../../Components/Loader";
+import MapComponent from "../../Components/Map";
 
 const StayPage = () => {
     let {id}=useParams();
@@ -36,7 +37,7 @@ const StayPage = () => {
         setIsload(false);
         window.scrollTo(0, 0);
         async function update(){
-            let temp=await getDocumentById(english?"homes":"homesAr",id);
+            let temp=await getDocumentById(english?"homes":"homesArr",id);
             console.log(temp);
             setData(temp)
             
@@ -180,6 +181,8 @@ const StayPage = () => {
                                         <i class="fa-solid fa-tag"></i>                                    </div>
                                 </div>
                             </div>
+                            <h1 className="text-[25px] mb-5 font-semibold font-[Poppins]">{langs[lang].whereYoullBe}</h1>
+                            <MapComponent latitude={data.latitude} longitude={data.longitude}/>
                             <MeetHost/>
                         </div>
                     </div>

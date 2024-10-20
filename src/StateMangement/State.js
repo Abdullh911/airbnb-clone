@@ -25,7 +25,7 @@ export const showLModal = atom({
   });
 export const listings = atom({
     key: 'listings', 
-    default: getAllHomes(isEnglish?"en":'ar'),
+    default: [],
 });
 export const showModal = atom({
     key: 'showModal', 
@@ -114,6 +114,10 @@ async function replaceUser(newUserObj) {
     } catch (error) {
         console.log("Error replacing user: ", error); 
     }
+}
+async function getListings(lang){
+    let x=await getAllHomes(lang);
+    return x;
 }
 async function getUser(){
     let inUser=JSON.parse(localStorage.getItem('user'));

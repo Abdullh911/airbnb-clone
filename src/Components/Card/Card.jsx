@@ -102,8 +102,8 @@ const Card = ({ home }) => {
                 navigate(`/stay/${home.id}`);
             }} className='w-full font-[Poppins] ' dir={`${english?'ltr':'rtl'}`} >
                 <div className='flex w-full justify-between'>
-                    <p className={`${!showText?'font-[450] text-[14px] w-full flex justify-between':'loadingCardContent'}`} >{data.cityCountry}</p>
-                    <p className={`${!showText?'flex items-center text-[14px] gap-1':'loadingCardContent'}`}><span className={`${!showText?'':'opacity-0'}`}><Star size={12} color="#0f0f0f" weight="fill" /></span> {data.rating} </p>
+                    <p className={`${!showText?'font-[450] text-[14px] flex justify-between truncate w-[90%]':'loadingCardContent'} `} >{data.cityCountry}</p>
+                    <p className={`${!showText?'flex items-center text-[14px] gap-1 w-[10%]':'loadingCardContent'} `}><span className={`${!showText?'':'opacity-0'}`}><Star size={12} color="#0f0f0f" weight="fill" /></span> {data.rating} </p>
                 </div>
                 <p className={`${!showText?'text-gray-500 text-[15px]':'loadingCardContent'}`}>{data.kilometersAway+`${english?" Kilometers away":" كم"}`}</p>
                 <p className={`${!showText?'text-gray-500 text-[15px]':'loadingCardContent'}`} >{`${english?"Oct 18-23":"اكتوبر 18-23"}`}</p>
