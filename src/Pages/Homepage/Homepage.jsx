@@ -17,11 +17,10 @@ const Homepage = () => {
     let [showDmodal, setShowDmodal] = useRecoilState(showDateModal);
     let [english, setEnglish] = useRecoilState(isEnglish);
 
-    const [lastIndex, setLastIndex] = useState(0); // Keeps track of the last index of loaded items
+    const [lastIndex, setLastIndex] = useState(0);
     const [pageSize, setPageSize] = useState(0);
-    const [allHomes, setAllHomes] = useState([]); // Store all fetched homes to avoid re-fetching
+    const [allHomes, setAllHomes] = useState([]);
 
-    // Fetch initial homes and set up the filters
     useEffect(() => {
         async function update() {
             let temp2 = Array(15).fill(false);
@@ -30,12 +29,12 @@ const Homepage = () => {
             
             let language = english ? 'en' : 'ar';
             let temp = await getAllHomes(language);
-            setAllHomes(temp); // Store all homes once fetched
+            setAllHomes(temp); 
             
-            const portionSize = Math.ceil(temp.length * 0.25); // Set portion size to 25%
+            const portionSize = Math.ceil(temp.length * 0.25);
             setPageSize(portionSize);
             
-            const initialFiltered = filterListings(temp.slice(0, portionSize)); // Slice the first 25% of listings
+            const initialFiltered = filterListings(temp.slice(0, portionSize));
             setFiltered(initialFiltered);
             setLastIndex(portionSize);
         }
@@ -44,7 +43,6 @@ const Homepage = () => {
         setShowText(false);
     }, [english, filters]);
 
-    // Reset some states on mount
     useEffect(() => {
         setIsTp(false);
         setIsWish(false);
@@ -53,7 +51,6 @@ const Homepage = () => {
         setShowDmodal(false);
     }, []);
 
-    // Filter logic
     const filterListings = (listingsToFilter) => {
         if (filters.type === 'Any') {
             return listingsToFilter.filter(listing => 
@@ -72,7 +69,6 @@ const Homepage = () => {
         );
     };
 
-    // Infinite scroll logic
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
@@ -80,24 +76,17 @@ const Homepage = () => {
             const documentHeight = document.documentElement.scrollHeight;
 
             if (scrollTop + windowHeight >= documentHeight - 200) {
-                // Check if there's more data to load
                 if (lastIndex >= allHomes.length) {
-                    return; // No more data to load
+                    return;
                 }
-
-                // Load the next portion of items
                 const nextItems = allHomes.slice(lastIndex, lastIndex + pageSize);
                 const newFiltered = filterListings(nextItems);
-
-                // Append new items to the filtered list
                 setFiltered(prev => [...prev, ...newFiltered]);
-                setLastIndex(lastIndex + pageSize); // Update the last index to track the loaded items
+                setLastIndex(lastIndex + pageSize); 
             }
         };
 
         window.addEventListener('scroll', handleScroll);
-
-        // Cleanup the event listener when the component unmounts
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
