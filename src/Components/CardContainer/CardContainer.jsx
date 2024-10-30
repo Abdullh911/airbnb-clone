@@ -35,7 +35,7 @@ const CardContainer = () => {
 
     return (
         <div className='overflow-hidden flex flex-col items-center relative  top-[150px] md:top-[280px] '>
-            <div className='h-[70vh] md:h-[60vh] ml-8 md:ml-0' style={{ width: '100%', overflowY: 'auto' }}> {/* Ensure overflow is scrollable */}
+            <div className='h-[70vh] md:h-[60vh] 2xl:h-[79vh] ml-8 md:ml-0' style={{ width: '100%', overflowY: 'auto' }}> {/* Ensure overflow is scrollable */}
                 <VirtuosoGrid
                     data={filtered}
                     itemContent={(index, home) => <Card key={home.id} home={home} />}
