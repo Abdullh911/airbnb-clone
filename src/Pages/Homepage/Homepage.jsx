@@ -40,7 +40,10 @@ const Homepage = () => {
         }
         setShowText(true);
         update();
-        setShowText(false);
+        const timer = setTimeout(() => {
+            setShowText(false);
+        }, 1500); 
+        return () => clearTimeout(timer);
     }, [english, filters]);
 
     useEffect(() => {
@@ -69,28 +72,7 @@ const Homepage = () => {
         );
     };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollTop = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-
-            if (scrollTop + windowHeight >= documentHeight - 200) {
-                if (lastIndex >= allHomes.length) {
-                    return;
-                }
-                const nextItems = allHomes.slice(lastIndex, lastIndex + pageSize);
-                const newFiltered = filterListings(nextItems);
-                setFiltered(prev => [...prev, ...newFiltered]);
-                setLastIndex(lastIndex + pageSize); 
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [lastIndex, allHomes, pageSize, filters]);
+    
 
     return ( 
         <div className="homepage">

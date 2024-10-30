@@ -75,7 +75,7 @@ const LargeSearch = () => {
                 
             </div>
             <div onClick={()=>{
-                if(dest!="Search Destinations"){
+                if(dest!=langs[lang].searchDest){
                     navigate(`/search/${dest}`);
                 }
                 

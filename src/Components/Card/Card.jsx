@@ -66,7 +66,7 @@ const Card = ({ home }) => {
     return (
         <div onClick={()=>{
             
-        }} className="cursor-pointer relative flex-shrink-0 w-full sm:w-[40%] md:w-[48%] lg:w-[31%] xl:w-[22%] mb-10 card z-0">
+        }} className="cursor-pointer relative flex-shrink-0 w-[90%] mb-10 card z-0">
             
             <i onClick={addFav} className={`${iconStyle} fa-heart absolute right-3 top-3 z-10 text-[20px] cursor-pointer hover:scale-110`} style={{ color: '#ff385c' }}></i>
             <div className='w-full h-[280px] mb-3 swiperCont' >
@@ -87,7 +87,7 @@ const Card = ({ home }) => {
                 >
                     {data.pictures.map((image, index) => (
                         <SwiperSlide key={index}>
-                            <img onClick={()=>{
+                            <img loading="lazy" onClick={()=>{
                                 if(showText){
                                     return
                                 }

@@ -1,55 +1,51 @@
 import React, { useEffect } from 'react';
 import './CardContainer.css';
-import homes from '../mockData';
 import Card from '../Card/Card';
 import { useRecoilState } from 'recoil';
 import { isLarge, showContModal, showDateModal, showModal } from '../../StateMangement/State';
-import TypeCarousel from '../TypeCarousel/TypeCarousel';
-import Switch from '../Switch/Switch';
-import FilterModal from '../FilterModal/FilterModal';
 import { listings } from '../../StateMangement/State';
 import Footer from '../Footer';
+import { VirtuosoGrid } from 'react-virtuoso';
 
 const CardContainer = () => {
     const [visible, setVisible] = useRecoilState(isLarge);
     const [filtered, setFiltered] = useRecoilState(listings);
-    let [showM,setShowM]=useRecoilState(showModal);
-    let [showCmodal,setShowCmodal]=useRecoilState(showContModal);
-    let [showDmodal,setShowDmodal]=useRecoilState(showDateModal);
+    let [showM, setShowM] = useRecoilState(showModal);
+    let [showCmodal, setShowCmodal] = useRecoilState(showContModal);
+    let [showDmodal, setShowDmodal] = useRecoilState(showDateModal);
+
+    // Log the data length to confirm there are enough items for scrolling
     useEffect(() => {
-        const handleScrollStart = () => {
-            if (visible) {
-                setVisible(false);
-                setShowCmodal(false);
-                setShowDmodal(false);
-            }
-        };
+        console.log("Filtered data length:", filtered.length);
+    }, [filtered]);
 
-        const handleScroll = () => {
-            if (!visible && window.scrollY === 0) {
-                setVisible(true);
-            }
-        };
+    const handleStartScroll = () => {
+        // Action to perform at the start of scrolling down
+        console.log("Scroll started near the top of VirtuosoGrid");
+        setVisible(false);
+        setShowCmodal(false);
+        setShowDmodal(false);
+    };
 
-        window.addEventListener('scroll', handleScroll);
-        window.addEventListener('scroll', handleScrollStart);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('scroll', handleScrollStart);
-        };
-    }, [visible]);
+    const handleEndScroll = () => {
+        // Action to perform when reaching the bottom of the content
+        console.log("Reached the end of VirtuosoGrid");
+        // You could load more content here if needed
+    };
 
     return (
-        <div className='flex flex-col items-center '>
-            
-            
-            <div className="CardContainer">
-                {filtered.map(home => (
-                    <Card key={home.id} home={home} />
-                ))}
+        <div className='overflow-hidden flex flex-col items-center relative  top-[150px] md:top-[280px] '>
+            <div className='h-[70vh] md:h-[60vh] ml-8 md:ml-0' style={{ width: '100%', overflowY: 'auto' }}> {/* Ensure overflow is scrollable */}
+                <VirtuosoGrid
+                    data={filtered}
+                    itemContent={(index, home) => <Card key={home.id} home={home} />}
+                    listClassName="CardContainer"
+                    style={{ width: '100%' }}
+                    
+                />
+                <Footer />
             </div>
-            <Footer/>
+            
         </div>
     );
 };
