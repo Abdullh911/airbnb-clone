@@ -23,12 +23,11 @@ const CardContainer = ({containerList}) => {
     return (
         <div className='overflow-hidden flex flex-col items-center relative  top-[150px] md:top-[280px] '>
             <div className=' h-[70vh] md:h-[60vh] 2xl:h-[79vh] ml-8 md:ml-0 ' style={{ width: '100%', overflowY: 'auto' }}> 
-                {containerList.length>0?<VirtuosoGrid
+                <VirtuosoGrid
                     data={containerList}
                     itemContent={(index, home) => <Card key={home.id} home={home} wid={1}/>}
                     listClassName="CardContainer"
-                    style={{ width: '100%' }}/>:<div>hi</div>}
-                
+                    style={{ width: '100%' }}/>
                 <Footer />
             </div>
             

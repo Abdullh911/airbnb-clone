@@ -47,8 +47,8 @@ const Wishlist = () => {
     
     return (
         <div>
-            {(load ||homesData.length<0) &&<Loader />}
-            {curr && homesData.length>0&& (
+            {load &&<Loader />}
+            {curr&& (
                 <div className="wishContainer">
                     <h1 className='text-2xl ml-14'>{langs[lang].Wishlist}</h1>
                     <div className='w-full flex flex-wrap gap-5 justify-center'>
