@@ -91,7 +91,7 @@ const Category = () => {
     },[category])
     return ( 
         <div className="homepage">
-            <CardContainer/>
+            <CardContainer containerList={filtered}/>
         </div>
      );
 }

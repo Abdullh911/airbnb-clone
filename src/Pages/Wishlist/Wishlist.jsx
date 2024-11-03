@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 import './Wishlist.css'
-import { currUser, isEnglish, isStay, isWishlist, langCode, userFunctions } from '../../StateMangement/State';
+import { currUser, isEnglish, isStay, isWishlist, langCode, listings, userFunctions } from '../../StateMangement/State';
 import Card from '../../Components/Card/Card';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,10 @@ import homes from '../../Components/mockData';
 import homesAr from '../../Components/mockDataAr';
 import Loader from '../../Components/Loader';
 import { getDocumentById } from '../../Components/dataFetch';
+import CardContainer from '../../Components/CardContainer/CardContainer';
+import langs from '../../langs';
 const Wishlist = () => {
+    const [filtered, setFiltered] = useRecoilState(listings);
     let [curr, setCurr] = useRecoilState(currUser);
     let [isRoomPage, setIsRoomPage] = useRecoilState(isStay);
     let [isWish, setIsWish] = useRecoilState(isWishlist);
@@ -29,30 +32,31 @@ const Wishlist = () => {
         setUser();
     }, []);
 
-    // Fetch homes data for wishlist
     useEffect(() => {
         if (curr?.wishlist?.length > 0) {
             const fetchHomes = async () => {
                 const homeDataPromises = curr.wishlist.map(homeId => getDocumentById(english ? "homes" : "homesAr", homeId.toString()));
                 const homeDataResults = await Promise.all(homeDataPromises);
-                console.log(homeDataResults);
                 const filteredArray = homeDataResults.filter(value => value !== null && value !== undefined);
+                console.log(filteredArray);
                 setHomesData(filteredArray);
             };
             fetchHomes();
         }
     }, [curr, english]);
-    if(homesData.length==0){
-        return <Loader/>
-    }
+    
     return (
         <div>
-            {load && <Loader />}
-            {curr && (
+            {(load ||homesData.length<0) &&<Loader />}
+            {curr && homesData.length>0&& (
                 <div className="wishContainer">
-                    {homesData.map((home, index) => (
-                        <Card key={curr.wishlist[index]} home={home} />
-                    ))}
+                    <h1 className='text-2xl ml-14'>{langs[lang].Wishlist}</h1>
+                    <div className='w-full flex flex-wrap gap-5 justify-center'>
+                        {homesData.map((home, index) => (
+                            <Card key={curr.wishlist[index]} home={home} />
+                        ))}
+                    </div>
+            
                 </div>
             )}
             {!curr && (

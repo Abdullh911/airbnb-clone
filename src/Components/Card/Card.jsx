@@ -15,7 +15,7 @@ import loading from '../../assets/Loading.png'
 import homesAr from '../mockDataAr';
 import { useRecoilValue } from 'recoil';
 
-const Card = ({ home }) => {
+const Card = ({ home ,wid}) => {
     const { replaceUser } = useRecoilValue(userFunctions);
     let [curr,setCurr]=useRecoilState(currUser);
     let [showS,setShowS]=useRecoilState(showSignup);
@@ -66,10 +66,11 @@ const Card = ({ home }) => {
     return (
         <div onClick={()=>{
             
-        }} className="cursor-pointer relative flex-shrink-0 w-[90%] mb-10 card z-0">
+        }} className={`cursor-pointer relative flex-shrink-0 ${wid==undefined?"w-[22%]":"w-[100%]"} mb-10 card z-0`}>
             
             <i onClick={addFav} className={`${iconStyle} fa-heart absolute right-3 top-3 z-10 text-[20px] cursor-pointer hover:scale-110`} style={{ color: '#ff385c' }}></i>
             <div className='w-full h-[280px] mb-3 swiperCont' >
+                
                 <Swiper
                     className='h-full swiperCard '
                     spaceBetween={10}

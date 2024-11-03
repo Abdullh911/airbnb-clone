@@ -16,11 +16,6 @@ const Homepage = () => {
     let [showCmodal, setShowCmodal] = useRecoilState(showContModal);
     let [showDmodal, setShowDmodal] = useRecoilState(showDateModal);
     let [english, setEnglish] = useRecoilState(isEnglish);
-
-    const [lastIndex, setLastIndex] = useState(0);
-    const [pageSize, setPageSize] = useState(0);
-    const [allHomes, setAllHomes] = useState([]);
-
     useEffect(() => {
         async function update() {
             let temp2 = Array(15).fill(false);
@@ -29,14 +24,7 @@ const Homepage = () => {
             
             let language = english ? 'en' : 'ar';
             let temp = await getAllHomes(language);
-            setAllHomes(temp); 
-            
-            const portionSize = Math.ceil(temp.length * 0.25);
-            setPageSize(portionSize);
-            
-            const initialFiltered = filterListings(temp.slice(0, portionSize));
-            setFiltered(initialFiltered);
-            setLastIndex(portionSize);
+            setFiltered(temp);
         }
         setShowText(true);
         update();
@@ -76,7 +64,7 @@ const Homepage = () => {
 
     return ( 
         <div className="homepage">
-            <CardContainer />
+            <CardContainer containerList={filtered}/>
         </div>
     );
 };

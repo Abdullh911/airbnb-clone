@@ -61,7 +61,7 @@ const SearchPage = () => {
     }
     return ( 
         <div className="homepage">
-            <CardContainer/>
+            <CardContainer containerList={filtered}/>
         </div>
      );
 }
