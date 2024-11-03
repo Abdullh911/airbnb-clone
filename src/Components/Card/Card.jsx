@@ -66,7 +66,7 @@ const Card = ({ home ,wid}) => {
     return (
         <div onClick={()=>{
             
-        }} className={`cursor-pointer relative flex-shrink-0 ${wid==undefined?"w-[22%]":"w-[100%]"} mb-10 card z-0`}>
+        }} className={`cursor-pointer relative flex-shrink-0 ${wid==undefined?"w-[80%] md:w-[32%] lg:w-[30%] xl:w-[22%]":"w-[100%]"} mb-10 card z-0`}>
             
             <i onClick={addFav} className={`${iconStyle} fa-heart absolute right-3 top-3 z-10 text-[20px] cursor-pointer hover:scale-110`} style={{ color: '#ff385c' }}></i>
             <div className='w-full h-[280px] mb-3 swiperCont' >
