@@ -24,6 +24,7 @@ const Homepage = () => {
             
             let language = english ? 'en' : 'ar';
             let temp = await getAllHomes(language);
+            temp=filterListings(temp);
             setFiltered(temp);
         }
         setShowText(true);
